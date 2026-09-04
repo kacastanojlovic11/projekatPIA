@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+
+.env
+.env.*
+
+.DS_Store
+
+backend_Node/uploads/*
+!backend_Node/uploads/default_profile_image.jpg

@@ -1,0 +1,73 @@
+<h2>Registracija</h2>
+
+<label>Tip korisnika:</label>
+<select [(ngModel)]="tip">
+    <option value="klijent_fizicko">Klijent - fizičko lice</option>
+    <option value="klijent_pravno">Klijent - pravno lice</option>
+    <option value="stamparija">Štamparija</option>
+</select>
+<br><br>
+<label>Korisničko ime:</label>
+<input type="text" [(ngModel)]="username">
+<br><br>
+
+<label>Lozinka:</label>
+<input type="password" [(ngModel)]="password">
+<br>
+
+<small>
+    Lozinka mora imati 8-12 karaktera,
+    mora početi slovom i sadržati
+    veliko slovo, broj i specijalni karakter.
+</small>
+<br><br>
+
+<label>Ime:</label>
+<input type="text" [(ngModel)]="ime">
+<br><br>
+
+<label>Prezime:</label>
+<input type="text" [(ngModel)]="prezime">
+<br><br>
+
+<label>Kontakt telefon:</label>
+<input type="text" [(ngModel)]="telefon">
+<br><br>
+
+<label>Email:</label>
+<input type="email" [(ngModel)]="email">
+<br><br>
+
+<label>Profilna slika:</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="onFileSelected($event)">
+<br><br>
+
+@if (tip === "klijent_pravno" || tip === "stamparija") {
+    <hr>
+    <h3>Podaci institucije</h3>
+    <label>Naziv institucije:</label>
+    <input type="text" [(ngModel)]="nazivInstitucije">
+    <br><br>
+
+    <label>Adresa sjedišta:</label>
+    <input type="text" [(ngModel)]="adresaSedista">
+    <br><br>
+
+    <label>Matični broj:</label>
+    <input type="text" [(ngModel)]="maticniBroj">
+    <br><br>
+
+    <label>PIB:</label>
+    <input type="text" [(ngModel)]="pib">
+    <br><br>
+}
+
+<button (click)="register()">Registruj se</button>
+<br><br>
+@if (error !== "") {
+    <span style="color: red;">{{ error }}</span>
+}
+
+@if (message !== "") {
+    <span style="color: green;">{{ message }}</span>
+}

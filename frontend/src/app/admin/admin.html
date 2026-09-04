@@ -1,0 +1,33 @@
+<h2>Zahtjevi za registraciju</h2>
+@if (korisnici.length === 0) {
+    <p>Nema novih zahtjeva za registraciju.</p>
+}@else {
+    <table border="1">
+        <tr>
+            <th>Korisničko ime</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Email</th>
+            <th>Tip</th>
+            <th>Akcije</th>
+        </tr>
+        @for (k of korisnici; track k.kor_ime) {
+            <tr>
+                <td>{{ k.kor_ime }}</td>
+                <td>{{ k.ime }}</td>
+                <td>{{ k.prezime }}</td>
+                <td>{{ k.mejl }}</td>
+                <td>{{ k.tip }}</td>
+                <td>
+                    <button (click)="prihvati(k.kor_ime)">Prihvati</button>
+                    <button (click)="odbij(k.kor_ime)">Odbij</button>
+                </td>
+            </tr>
+        }
+    </table>
+}
+<br>
+
+@if (message !== "") {
+    <span style="color:green"> {{ message }}</span>
+}
