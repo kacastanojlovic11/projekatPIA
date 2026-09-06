@@ -1,0 +1,62 @@
+<h1>Štamparija</h1>
+<h2>Opšte informacije</h2>
+<p>Broj registrovanih štamparija:{{ brojStamparija }}</p>
+<hr>
+
+<h2>TOP 5 proizvoda</h2>
+<table border="1">
+    <tr>
+        <th>Naziv</th>
+        <th>Štamparija</th>
+        <th>Kategorija</th>
+        <th>Lajkovi</th>
+    </tr>
+
+    @for (proizvod of topProizvodi; track proizvod._id) {
+        <tr>
+            <td>{{ proizvod.naziv }}</td>
+            <td>{{ proizvod.nazivStamparije }}</td>
+            <td>{{ proizvod.kategorija }}</td>
+            <td>{{ proizvod.brojLajkova }}</td>
+        </tr>
+    }
+</table>
+<hr>
+
+<h2>Pretraga proizvoda</h2>
+<label>Naziv proizvoda:</label>
+<input type="text" [(ngModel)]="naziv">
+<br><br>
+
+<label>Kategorija:</label>
+<select [(ngModel)]="kategorija">
+    <option>Sve kategorije</option>
+    @for (kat of kategorije; track kat) {
+        <option [value]="kat">{{ kat }}</option>
+    }
+</select>
+<br><br>
+
+<button (click)="pretrazi()">Pretraži</button>
+<hr>
+
+<h2>Rezultati pretrage</h2>
+<table border="1">
+    <tr>
+        <th (click)="sortirajPoNazivu()">Naziv @if (sortRastuce) {(A-Z)}@else {(Z-A)}</th>
+        <th>Kategorija</th>
+        <th>Štamparija</th>
+        <th></th>
+    </tr>
+
+    @for (proizvod of rezultati; track proizvod._id) {
+        <tr>
+            <td>{{ proizvod.naziv }}</td>
+            <td>{{ proizvod.kategorija }}</td>
+            <td>{{ proizvod.nazivStamparije }}</td>
+            <td>
+                <button (click)="detalji(proizvod)">DETALJI</button>
+            </td>
+        </tr>
+    }
+</table>

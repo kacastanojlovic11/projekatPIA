@@ -1,97 +1,84 @@
 import * as express from 'express';
 import ProizvodModel from '../models/proizvod'
 import proizvod from '../models/proizvod';
+import KorisnikModel from '../models/korisnik'
+
 
 export class ProizvodiController {
-    dohvatiProizvode = (req: express.Request, res: express.Response) => {
-        ProizvodModel.find({}).then(proizvodi => {
-            res.json(proizvodi)
-        }).catch(err => {
-            console.log(err)
-            res.json([])
-        })
+
+    brojStamparija = async (req: express.Request, res: express.Response) => {
+        try {
+            const broj = await KorisnikModel.countDocuments({tip: "stamparija", status: "active"});
+            return res.json({broj: broj});
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška."
+            });
+        }
     }
-
-    kupi = (req: express.Request, res: express.Response) => {
-        let naziv = req.body.naziv
-        let kupovina = req.body.kupovina
-
-        ProizvodModel.updateOne({ naziv: naziv }, { $push: { kupovine: kupovina } }).then(proizvod => {
-            res.json({ "message": "OK" })
-        }).catch(err => {
-            console.log(err)
-            res.json({ "message": "Greska pri kupovini" })
-        })
-    }
-
-    dohvatiProizvod = (req: express.Request, res: express.Response) => {
-        let naziv = req.params.naziv
-
-        ProizvodModel.findOne({ naziv: naziv }).then(proizvod => {
-            res.json(proizvod)
-        }).catch(err => {
-            console.log(err)
-            res.json(null)
-        })
-    }
-
-    komentarisi = (req: express.Request, res: express.Response) => {
-        let naziv = req.body.naziv
-        let komentar = req.body.komentar
     
-        ProizvodModel.updateOne({ naziv: naziv }, { $push: { komentari: komentar } }).then(proizvod => {
-            res.json({ "message": "OK" })
-        }).catch(err => {
-            console.log(err)
-            res.json({ "message": "Greska pri dodavanju komentara" })
-        })
+    top5 = async (req: express.Request, res: express.Response) => {
+        try {
+            const proizvodi = await ProizvodModel.find({aktivan: true, kolicinaNaLageru: { $gt: 0 }}).sort({ brojLajkova: -1 }).limit(5);
+            return res.json(proizvodi);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška."
+            });
+        }
     }
 
-    odobri = (req: express.Request, res: express.Response) => {
-        let proizvod = req.body.proizvod
-        let komentar = req.body.komentar
-
-        ProizvodModel.updateOne({ id: proizvod.id, 'komentari.kupac': komentar.kupac, 'komentari.tekst': komentar.tekst }, { $set: { 'komentari.$.status': 'odobren' } }).then(proizvod => {
-            res.json({ "message": "OK" })
-        }).catch(err => {
-            console.log(err)
-            res.json({ "message": "Greska pri odobravanju komentara" })
-        })
+    kategorije = async (req: express.Request, res: express.Response) => {
+        try {
+            const kategorije = await ProizvodModel.distinct("kategorija", {aktivan: true, kolicinaNaLageru: { $gt: 0 }});
+            return res.json(kategorije);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška."
+            });
+        }
     }
 
-    odbaci = (req: express.Request, res: express.Response) => {
-        let proizvod = req.body.proizvod
-        let komentar = req.body.komentar
+    pretraga = async (req: express.Request, res: express.Response) => {
+        try {
+            const naziv = req.body.naziv;
+            const kategorija = req.body.kategorija;
+            let uslov: any = {aktivan: true, kolicinaNaLageru: { $gt: 0 } };
 
-        ProizvodModel.updateOne({ id: proizvod.id }, { $pull: { komentari: { kupac: komentar.kupac, tekst: komentar.tekst } } }).then(proizvod => {
-            res.json({ "message": "OK" })
-        }).catch(err => {
-            console.log(err)
-            res.json({ "message": "Greska pri odbacivanju komentara" })
-        })
+            if (naziv) {
+                uslov.naziv = { $regex: naziv,  $options: "i" };
+            }
+
+            if ( kategorija && kategorija !== "Sve kategorije" ) {
+                uslov.kategorija = kategorija;
+            }
+
+            const proizvodi = await ProizvodModel.find(uslov);
+            return res.json(proizvodi);
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška."
+            });
+        }
     }
 
-    unesi = (req: express.Request, res: express.Response) => {
-        ProizvodModel.findOne({}).sort({id: -1}).then(maxIdProizvod => {
-            const noviId = Number(maxIdProizvod?.id ?? 0) + 1
-
-            let novProizvod = new ProizvodModel({
-                id: noviId,
-                naziv: req.body.naziv,
-                opis: req.body.opis,
-                kupovine: [],
-                komentari: []
-            })
-    
-            novProizvod.save().then(proizvod => {
-                res.json({ "message": "OK" })
-            }).catch(err => {
-                console.log(err)
-                res.json({ "message": "Greska pri unosu proizvoda" })
-            })
-        }).catch(err => {
-            console.log(err)
-            res.json({ "message": "Greska pri unosu proizvoda" })
-        })
+    detalji = async (req: express.Request, res: express.Response) => {
+        try {
+            const sifra = req.params.sifra;
+            const proizvod = await ProizvodModel.findOne({ sifra: sifra });
+            if (!proizvod) {
+                return res.status(404).json({ message: "Proizvod nije pronađen." });
+            }
+            return res.json(proizvod);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Greška." });
+        }
     }
+
 }

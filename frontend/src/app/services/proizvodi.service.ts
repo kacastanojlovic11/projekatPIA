@@ -1,34 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-// import { Komentari, Kupovine, Proizvod } from '../models/proizvod';
-// import { Poruka } from '../models/poruka';
+import Proizvod from '../models/proizvod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProizvodiService {
 
-  // private http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  // uri = "http://localhost:4000/proizvodi";
+  uri = "http://localhost:4000/proizvodi";
 
-  // dohvatiProizvode() {
-  //   return this.http.get<Proizvod[]>(`${this.uri}/dohvatiProizvode`)
-  // }
+  brojStamparija() {
+    return this.http.get<{broj: number}>(`${this.uri}/brojStamparija`)
+  }
 
-  // kupi(kupovina: Kupovine, naziv: string) {
-  //   const data = { kupovina: kupovina, naziv: naziv }
-  //   return this.http.post<Poruka>(`${this.uri}/kupi`, data)
-  // }
+  top5() {
+    return this.http.get<Proizvod[]>(`${this.uri}/top5`)
+  }
 
-  // dohvatiProizvod(naziv: string) {
-  //   return this.http.get<Proizvod>(`${this.uri}/dohvatiProizvod/${naziv}`)
-  // }
+  kategorije() {
+    return this.http.get<string[]>(`${this.uri}/kategorije`)
+  }
 
-  // komentarisi(komentar: Komentari, naziv: string) {
-  //   const data = { komentar: komentar, naziv: naziv }
-  //   return this.http.post<Poruka>(`${this.uri}/komentarisi`, data)
-  // }
+  pretraga(naziv: string, kategorija: string) {
+    const data = { naziv: naziv, kategorija: kategorija }
+    return this.http.post<Proizvod[]>(`${this.uri}/pretraga`, data)
+  }
+
+  detalji(sifra: string) {
+    return this.http.get<Proizvod>(`${this.uri}/detalji/${sifra}`);
+  }
 
   // odobri(proizvod: Proizvod, komentar: Komentari) {
   //   const data = { proizvod: proizvod, komentar: komentar }

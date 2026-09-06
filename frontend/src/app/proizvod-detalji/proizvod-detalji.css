@@ -1,0 +1,7 @@
+.thumbnail {
+    margin: 5px;
+    cursor: pointer;
+}
+img {
+    object-fit: contain;
+}

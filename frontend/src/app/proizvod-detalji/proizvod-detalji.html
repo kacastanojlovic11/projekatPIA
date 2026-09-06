@@ -1,0 +1,19 @@
+<h1>{{ proizvod.naziv }}</h1>
+<h2>Galerija</h2>
+@if (glavnaSlika) {
+    <div>  <img [src]="glavnaSlika" width="150"> </div>
+    <br>
+
+    <div>
+        @for (slika of sveSlike; track slika) {
+            <img [src]="slika" width="80" (click)="izaberiSliku(slika)" class="thumbnail">
+        }
+    </div>
+}
+<p><b>Štamparija: </b>{{ proizvod.nazivStamparije }}</p>
+<p><b>Grad: </b>{{ proizvod.grad }}</p>
+<p><b>Lajkovi: </b>{{ proizvod.brojLajkova }}</p>
+<p><b>Dislajkovi: </b>{{ proizvod.brojDislajkova }}</p>
+<p><b>Opis: </b>{{ proizvod.opis }}</p>
+<p><b>Kategorija: </b>{{ proizvod.kategorija }}</p>
+<p><b>Cijena: </b>{{ proizvod.jedinicnaCena }}</p>
