@@ -48,4 +48,13 @@ userRouter.route('/odbijRegistraciju').post(
     (req, res) => new UserController().odbijRegistraciju(req, res)
 );
 
+userRouter.route('/profil/:username').get(
+    (req, res) => new UserController().dohvatiProfil(req, res)
+);
+
+userRouter.route('/azurirajProfil').post(
+    upload.single("profilnaSlika"),
+    (req, res) => new UserController().azurirajProfil(req, res)
+);
+
 export default userRouter;

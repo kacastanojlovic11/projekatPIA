@@ -1,6 +1,5 @@
 import * as express from 'express';
 import ProizvodModel from '../models/proizvod'
-import proizvod from '../models/proizvod';
 import KorisnikModel from '../models/korisnik'
 
 
@@ -74,7 +73,16 @@ export class ProizvodiController {
             if (!proizvod) {
                 return res.status(404).json({ message: "Proizvod nije pronađen." });
             }
-            return res.json(proizvod);
+
+            const stamparija = await KorisnikModel.findById(proizvod.stamparijaId);
+
+            let adresaStamparije = "";
+
+            if(stamparija && stamparija.adresa_sedista){
+                adresaStamparije = stamparija.adresa_sedista;
+            }
+
+            return res.json({...proizvod.toObject(), adresaStamparije: adresaStamparije});
         } catch (err) {
             console.log(err);
             return res.status(500).json({ message: "Greška." });

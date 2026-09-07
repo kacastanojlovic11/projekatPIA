@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProizvodiService } from '../services/proizvodi.service';
 import Proizvod from '../models/proizvod';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-pocetna',
@@ -14,6 +14,7 @@ export class Pocetna implements OnInit {
   private proizvodiService = inject(ProizvodiService);
 
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   brojStamparija: number = 0;
   topProizvodi: Proizvod[] = [];
@@ -23,7 +24,10 @@ export class Pocetna implements OnInit {
   rezultati: Proizvod[] = [];
   sortRastuce: boolean = true;
 
+  klijentPrikaz: boolean = false;
+
   ngOnInit(): void {
+    this.klijentPrikaz = this.route.snapshot.data['klijent'] === true;
     this.dohvatiBrojStamparija();
     this.dohvatiTop5();
     this.dohvatiKategorije();
@@ -69,6 +73,12 @@ export class Pocetna implements OnInit {
   }
 
   detalji(proizvod: Proizvod){
-    this.router.navigate(["detalji", proizvod.sifra])
+    if(this.klijentPrikaz){
+      this.router.navigate(["klijent", "detalji", proizvod.sifra])
+    }else{
+      this.router.navigate(["detalji", proizvod.sifra])
+    }
+
+    
   }
 }

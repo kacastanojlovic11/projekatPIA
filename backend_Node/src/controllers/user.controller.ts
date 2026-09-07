@@ -388,4 +388,124 @@ export class UserController {
             return res.status(500).json({message: "Greška."});
         }
     }
+
+
+    dohvatiProfil = async (req: express.Request, res: express.Response) => {
+        try {
+            const username = req.params.username;
+            const korisnik = await KorisnikModel.findOne({kor_ime: username}).select("-lozinka -resetPasswordToken -resetPasswordExpires");
+
+            if (!korisnik) {
+                return res.status(404).json({ message: "Korisnik nije pronađen." });
+            }
+            return res.json(korisnik);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Greška."});
+        }
+    }
+
+
+    azurirajProfil = async (req: express.Request, res: express.Response) => {
+        try {
+            const username = req.body.username;
+
+            const ime = req.body.ime;
+            const prezime = req.body.prezime;
+            const telefon = req.body.telefon;
+            const email = req.body.email;
+
+            const nazivInstitucije = req.body.nazivInstitucije;
+            const adresaSedista = req.body.adresaSedista;
+
+            const maticniBroj =  req.body.maticniBroj;
+
+            const pib = req.body.pib;
+
+            const korisnik = await KorisnikModel.findOne({kor_ime: username});
+
+            if (!korisnik) {
+                return res.status(404).json({ message: "Korisnik nije pronađen." });
+            }
+
+            if (!ime || !prezime || !telefon || !email) {
+                return res.status(400).json({ message: "Nisu uneseni svi podaci."});
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                return res.status(400).json({message: "Email adresa nije ispravna."});
+            }
+
+            const korisnikSaEmailom = await KorisnikModel.findOne({mejl: email, kor_ime: {$ne: username}});
+
+            if (korisnikSaEmailom) {
+                return res.status(400).json({ message: "Već postoji korisnik sa ovom email adresom."});
+            }
+
+            let profilnaSlika = korisnik.profilna_slika;
+
+            if (req.file) {
+                const dozvoljeniFormati = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/gif"
+                ];
+
+                if (!dozvoljeniFormati.includes(req.file.mimetype)) {
+                    fs.unlinkSync(req.file.path);
+                    return res.status(400).json({message:"Profilna slika mora biti JPG, PNG ili GIF."});
+                }
+
+                const imageBuffer = fs.readFileSync(req.file.path);
+                const dimensions = imageSize(imageBuffer);
+
+                if (!dimensions.width || !dimensions.height || dimensions.width < 100 || dimensions.height < 100 || dimensions.width > 250 || dimensions.height > 250) {
+                    fs.unlinkSync(req.file.path);
+                    return res.status(400).json({message: "Profilna slika mora biti dimenzija od 100x100 do 250x250 piksela."});
+                }
+                profilnaSlika = req.file.filename;
+            }
+
+            korisnik.ime = ime;
+            korisnik.prezime = prezime;
+            korisnik.telefon = telefon;
+            korisnik.mejl = email;
+
+            korisnik.profilna_slika = profilnaSlika;
+
+
+            if (korisnik.tip === "klijent_pravno") {
+                korisnik.naziv_institucije = nazivInstitucije;
+                korisnik.adresa_sedista = adresaSedista;
+                korisnik.maticni_broj = maticniBroj;
+                korisnik.pib = pib;
+            }
+
+            await korisnik.save();
+
+
+            return res.json({message:"Podaci su uspješno ažurirani.",
+                            korisnik: {
+                                _id: korisnik._id,
+                                kor_ime: korisnik.kor_ime,
+                                ime: korisnik.ime,
+                                prezime: korisnik.prezime,
+                                telefon: korisnik.telefon,
+                                mejl: korisnik.mejl,
+                                profilna_slika: korisnik.profilna_slika,
+                                tip: korisnik.tip,
+                                status: korisnik.status,
+                                naziv_institucije: korisnik.naziv_institucije,
+                                adresa_sedista: korisnik.adresa_sedista,
+                                maticni_broj: korisnik.maticni_broj,
+                                pib: korisnik.pib
+                            }
+            });
+        } catch (err) {
+        console.log(err);
+        return res.status(500).json({message:"Greška prilikom ažuriranja profila."});
+        }
+    }  
 }

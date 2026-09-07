@@ -11,9 +11,54 @@
     </div>
 }
 <p><b>Štamparija: </b>{{ proizvod.nazivStamparije }}</p>
+@if (klijentPrikaz && mapaUrl) {
+    <h3>Lokacija štamparije</h3>
+    <iframe [src]="mapaUrl" width="600" height="450" style="border:0" loading="lazy" title="Lokacija štamparije"></iframe>
+}
 <p><b>Grad: </b>{{ proizvod.grad }}</p>
 <p><b>Lajkovi: </b>{{ proizvod.brojLajkova }}</p>
 <p><b>Dislajkovi: </b>{{ proizvod.brojDislajkova }}</p>
 <p><b>Opis: </b>{{ proizvod.opis }}</p>
 <p><b>Kategorija: </b>{{ proizvod.kategorija }}</p>
 <p><b>Cijena: </b>{{ proizvod.jedinicnaCena }}</p>
+
+@if (klijentPrikaz) {
+    <hr>
+    <h2>Dodatne informacije</h2>
+    <p><b>Opis: </b>{{ proizvod.opis }}</p>
+    <p><b>Cijena po komadu: </b>{{ proizvod.jedinicnaCena }} RSD</p>
+
+    <label>Boja: </label>
+    <select [(ngModel)]="izabranaBoja">
+        @for (boja of boje; track boja) {
+            <option [value]="boja">{{ boja }}</option>
+        }
+    </select>
+    <br><br>
+
+    <label>Vrsta štampe: </label>
+    <select [(ngModel)]="izabranaUslugaID">
+        @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
+            <option [value]="usluga.idUsluge">{{ usluga.tipStampe }}</option>
+        }
+    </select>
+
+    <h3>Dostupne usluge štampe</h3>
+    <table border="1">
+        <tr>
+            <th>Vrsta štampe</th>
+            <th>Maks. širina</th>
+            <th>Maks. visina</th>
+            <th>Dodatna cijena/kom.</th>
+        </tr>
+
+        @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
+            <tr>
+                <td>{{ usluga.tipStampe }}</td>
+                <td>{{ usluga.maxSirinaMm }} mm</td>
+                <td>{{ usluga.maxVisinaMm }} mm</td>
+                <td>{{ usluga.dodatnaCenaPoKomadu }} RSD</td>
+            </tr>
+        }
+    </table>
+}

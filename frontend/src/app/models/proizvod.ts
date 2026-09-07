@@ -17,4 +17,5 @@ export default class Proizvod {
     brojLajkova: number = 0;
     brojDislajkova: number = 0;
     uslugeStampe: any[] = [];
+    adresaStamparije: string = "";
 }

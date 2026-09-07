@@ -69,4 +69,24 @@ export class UserService {
     return this.http.post<{ message: string }>(`${this.uri}/odbijRegistraciju`, data);
   }
 
+  dohvatiProfil(username: string) {
+    return this.http.get<User>(`${this.uri}/profil/${username}`);
+  }
+
+  azurirajProfil(username: string, ime: string, prezime: string, telefon: string, email: string, nazivInstitucije: string, adresaSedista: string, maticniBroj: string, pib: string, profilnaSlika: File | null) {
+    const data = new FormData();
+    data.append( "username", username);
+    data.append( "ime", ime);
+    data.append( "prezime", prezime);
+    data.append( "telefon", telefon);
+    data.append( "email", email);
+    data.append( "nazivInstitucije", nazivInstitucije);
+    data.append( "adresaSedista", adresaSedista);
+    data.append( "maticniBroj", maticniBroj);
+    data.append( "pib", pib);
+    if (profilnaSlika) {
+      data.append("profilnaSlika", profilnaSlika);
+    }
+    return this.http.post<any>(`${this.uri}/azurirajProfil`, data);
+  }
 }

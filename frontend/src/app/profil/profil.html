@@ -1,0 +1,55 @@
+<h1>Profil</h1>
+@if (korisnik.profilna_slika) {
+    <img [src]="'http://localhost:4000/uploads/' + korisnik.profilna_slika" width="150">
+}
+<br><br>
+
+<label>Korisničko ime:</label>
+<input type="text" [(ngModel)]="korisnik.kor_ime" disabled>
+<br><br>
+
+<label>Ime:</label>
+<input type="text" [(ngModel)]="korisnik.ime">
+<br><br>
+
+<label>Prezime:</label>
+<input type="text" [(ngModel)]="korisnik.prezime">
+<br><br>
+
+<label>Telefon:</label>
+<input type="text" [(ngModel)]="korisnik.telefon">
+<br><br>
+
+<label>Email:</label>
+<input type="text" [(ngModel)]="korisnik.mejl">
+<br><br>
+
+@if (korisnik.tip === "klijent_pravno") {
+    <label>Naziv institucije:</label>
+    <input type="text" [(ngModel)]="korisnik.naziv_institucije">
+    <br><br>
+
+    <label>Adresa sjedišta:</label>
+    <input type="text" [(ngModel)]="korisnik.adresa_sedista">
+    <br><br>
+
+    <label>Matični broj:</label>
+    <input type="text" [(ngModel)]="korisnik.maticni_broj">
+    <br><br>
+
+    <label>PIB:</label>
+    <input type="text" [(ngModel)]="korisnik.pib">
+    <br><br>
+}
+
+<label>Nova profilna slika:</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaSlika($event)">
+<br><br>
+
+<button (click)="sacuvaj()"> Sačuvaj izmjene</button>
+@if (message) {
+    <p>{{ message }}</p>
+}
+@if (error) {
+    <p class="error">{{ error }}</p>
+}
