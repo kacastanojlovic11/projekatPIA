@@ -1,0 +1,50 @@
+<div class="statistika">
+
+    <h1>Statistika</h1>
+
+    <section class="grafikon-kartica">
+
+        <h2>Promet štamparija u posljednja 3 mjeseca</h2>
+        <div class="grafikon">
+            <canvas id="prometGrafikon"></canvas>
+        </div>
+
+    </section>
+
+    <section class="grafikon-kartica">
+
+        <h2>
+            Najčešće naručivani proizvodi
+            u posljednjih mjesec dana
+        </h2>
+
+        <div class="grafikon">
+            <canvas id="proizvodiGrafikon"></canvas>
+        </div>
+
+    </section>
+
+    <section class="grafikon-kartica">
+
+        <h2>Kretanje ocjene proizvoda kroz vrijeme</h2>
+        <h3>Proizvodi za prikaz</h3>
+        <div class="izbor-proizvoda">
+
+            @for (proizvod of podaciOcjena; track proizvod.sifra) {
+            <label class="checkbox-red">
+                <input type="checkbox" [(ngModel)]="prikazProizvoda[proizvod.sifra]" (change)="promijeniPrikaz()">{{ proizvod.naziv }}
+            </label>
+            }
+        </div>
+
+        <div class="grafikon">
+            <canvas id="ocjeneGrafikon"></canvas>
+        </div>
+
+    </section>
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+</div>

@@ -1,55 +1,184 @@
-<h1>Profil</h1>
-@if (korisnik.profilna_slika) {
-    <img [src]="'http://localhost:4000/uploads/' + korisnik.profilna_slika" width="150">
-}
-<br><br>
+<div class="profil">
 
-<label>Korisničko ime:</label>
-<input type="text" [(ngModel)]="korisnik.kor_ime" disabled>
-<br><br>
+    <h1>Profil</h1>
 
-<label>Ime:</label>
-<input type="text" [(ngModel)]="korisnik.ime">
-<br><br>
+    <div class="profil-podaci">
 
-<label>Prezime:</label>
-<input type="text" [(ngModel)]="korisnik.prezime">
-<br><br>
+        @if (korisnik.profilna_slika) {
+        <div class="profilna-slika">
+            <img [src]="'http://localhost:4000/uploads/' + korisnik.profilna_slika" alt="Profilna slika">
+        </div>
+        }
 
-<label>Telefon:</label>
-<input type="text" [(ngModel)]="korisnik.telefon">
-<br><br>
+        <div class="forma-red">
+            <label>Korisničko ime:</label>
+            <input type="text" [(ngModel)]="korisnik.kor_ime" disabled>
+        </div>
 
-<label>Email:</label>
-<input type="text" [(ngModel)]="korisnik.mejl">
-<br><br>
+        <div class="forma-red">
+            <label>Ime:</label>
+            <input type="text" [(ngModel)]="korisnik.ime">
+        </div>
 
-@if (korisnik.tip === "klijent_pravno") {
-    <label>Naziv institucije:</label>
-    <input type="text" [(ngModel)]="korisnik.naziv_institucije">
-    <br><br>
+        <div class="forma-red">
+            <label>Prezime:</label>
+            <input type="text" [(ngModel)]="korisnik.prezime">
+        </div>
 
-    <label>Adresa sjedišta:</label>
-    <input type="text" [(ngModel)]="korisnik.adresa_sedista">
-    <br><br>
+        <div class="forma-red">
+            <label>Telefon:</label>
+            <input type="text" [(ngModel)]="korisnik.telefon">
+        </div>
 
-    <label>Matični broj:</label>
-    <input type="text" [(ngModel)]="korisnik.maticni_broj">
-    <br><br>
+        <div class="forma-red">
+            <label>Email:</label>
+            <input type="text" [(ngModel)]="korisnik.mejl">
+        </div>
 
-    <label>PIB:</label>
-    <input type="text" [(ngModel)]="korisnik.pib">
-    <br><br>
-}
+        @if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
 
-<label>Nova profilna slika:</label>
-<input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaSlika($event)">
-<br><br>
+        <div class="institucija">
 
-<button (click)="sacuvaj()"> Sačuvaj izmjene</button>
-@if (message) {
-    <p>{{ message }}</p>
-}
-@if (error) {
-    <p class="error">{{ error }}</p>
-}
+            <h3>Podaci institucije</h3>
+
+            <div class="forma-red">
+                <label>Naziv institucije:</label>
+                <input type="text" [(ngModel)]="korisnik.naziv_institucije">
+            </div>
+
+            <div class="forma-red">
+                <label>Adresa sjedišta:</label>
+                <input type="text" [(ngModel)]="korisnik.adresa_sedista">
+            </div>
+
+            <div class="forma-red">
+                <label>Matični broj:</label>
+                <input type="text" [(ngModel)]="korisnik.maticni_broj">
+            </div>
+
+            <div class="forma-red">
+                <label>PIB:</label>
+                <input type="text" [(ngModel)]="korisnik.pib">
+            </div>
+
+        </div>
+        }
+
+        <div class="forma-red">
+            <label>Nova profilna slika:</label>
+            <input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaSlika($event)">
+        </div>
+
+        <button (click)="sacuvaj()">Sačuvaj izmjene</button>
+
+        @if (message) {
+        <p class="uspjeh">{{ message }}</p>
+        }
+
+        @if (error) {
+        <p class="greska">{{ error }}</p>
+        }
+
+    </div>
+
+
+    @if (tipKorisnika === "klijent_fizicko" || tipKorisnika === "klijent_pravno") {
+
+    <section class="narudzbine">
+
+        <h2>Narudžbine</h2>
+
+        @if (narudzbine.length === 0) {
+
+        <p>Nema narudžbina.</p>
+
+        } @else {
+
+        <div class="tabela-okvir">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID fakture</th>
+                        <th>Štamparija</th>
+                        <th>Grad</th>
+                        <th>Proizvodi</th>
+                        <th>Ukupan iznos</th>
+
+                        <th class="sortiranje" (click)="sortirajNarudzbine()">
+
+                            Datum
+
+                            @if (sortRastuce) {
+                            ↑
+                            } @else {
+                            ↓
+                            }
+
+                        </th>
+
+                        <th>Status</th>
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (narudzbina of narudzbine; track narudzbina._id) {
+
+                    <tr>
+                        <td>{{ narudzbina._id }}</td>
+
+                        <td>
+                            {{ narudzbina.nazivStamparije }}
+                        </td>
+
+                        <td>
+                            {{ narudzbina.grad }}
+                        </td>
+
+                        <td>
+                            <ol>
+                                @for (stavka of narudzbina.stavke; track $index) {
+                                <li>
+                                    {{ stavka.nazivProizvoda }}
+                                    ({{ stavka.kolicina }})
+                                </li>
+                                }
+                            </ol>
+                        </td>
+
+                        <td>
+                            {{ narudzbina.ukupanIznos }} RSD
+                        </td>
+
+                        <td>
+                            {{ narudzbina.datumNarucivanja | date:'dd.MM.yyyy HH:mm' }}
+                        </td>
+
+                        <td>
+                            {{ narudzbina.status }}
+                        </td>
+
+                        <td>
+                            @if (narudzbina.status === "naruceno") {
+                            <button class="dugme-otkazi" (click)="otkaziNarudzbinu(narudzbina)">
+                                OTKAŽI
+                            </button>
+                            }
+                        </td>
+                    </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+        }
+
+    </section>
+    }
+
+</div>

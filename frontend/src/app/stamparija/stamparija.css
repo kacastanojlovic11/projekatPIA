@@ -1,0 +1,22 @@
+.dobrodoslica {
+    max-width: 650px;
+
+    margin: 40px auto;
+    padding: 35px;
+
+    text-align: center;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.dobrodoslica h1 {
+    margin-top: 0;
+}
+
+.dobrodoslica p {
+    color: var(--sekundarni-tekst);
+    font-size: 16px;
+}

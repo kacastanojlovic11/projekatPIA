@@ -1,0 +1,44 @@
+<nav class="navigacija">
+
+    @if (!korisnik && !admin) {
+    <a routerLink="/">POČETNA</a>
+    <a routerLink="/login">ULOGUJ SE</a>
+    <a routerLink="/register">REGISTRACIJA</a>
+    }
+
+    @if (korisnik?.tip === "klijent_fizicko" || korisnik?.tip === "klijent_pravno") {
+
+    <a routerLink="/klijent">POČETNA</a>
+    <a routerLink="/klijent/profil">PROFIL</a>
+    <a routerLink="/klijent/pretraga">PROIZVODI</a>
+    <a routerLink="/klijent/korpa">KORPA</a>
+    <a routerLink="/klijent/arhiva">ARHIVA</a>
+
+    @if (korisnik?.tip === "klijent_pravno") {
+    <a routerLink="/klijent/javne-nabavke">JAVNE NABAVKE</a>
+    }
+    }
+
+    @if (korisnik?.tip === "stamparija") {
+
+    <a routerLink="/stamparija">POČETNA</a>
+    <a routerLink="/stamparija/profil">PROFIL</a>
+    <a routerLink="/stamparija/proizvodi">PROIZVODI</a>
+    <a routerLink="/stamparija/narudzbine">NARUDŽBINE</a>
+    <a routerLink="/stamparija/licitacije">LICITACIJE</a>
+    }
+
+    @if (admin) {
+
+    <a routerLink="/admin">POČETNA</a>
+    <a routerLink="/admin/korisnici">KORISNICI</a>
+    <a routerLink="/admin">REGISTRACIJE</a>
+    <a routerLink="/admin/kategorije">KATEGORIJE</a>
+    <a routerLink="/admin/statistika">STATISTIKA</a>
+    }
+
+    @if (korisnik || admin) {
+    <button type="button" (click)="izlogujSe()">IZLOGUJ SE</button>
+    }
+
+</nav>

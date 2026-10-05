@@ -1,0 +1,95 @@
+<div class="izmjena-korisnika">
+
+    <h1>Izmjena korisnika</h1>
+
+    <div class="forma-kartica">
+
+        <div class="forma-red">
+            <label>Korisničko ime:</label>
+            <input type="text" [(ngModel)]="korisnik.kor_ime" disabled>
+        </div>
+
+        <div class="forma-red">
+            <label>Tip korisnika:</label>
+            <input type="text" [(ngModel)]="korisnik.tip" disabled>
+        </div>
+
+        <div class="forma-red">
+            <label>Ime:</label>
+            <input type="text" [(ngModel)]="korisnik.ime">
+        </div>
+
+        <div class="forma-red">
+            <label>Prezime:</label>
+            <input type="text" [(ngModel)]="korisnik.prezime">
+        </div>
+
+        <div class="forma-red">
+            <label>Telefon:</label>
+            <input type="text" [(ngModel)]="korisnik.telefon">
+        </div>
+
+        <div class="forma-red">
+            <label>Email:</label>
+            <input type="email" [(ngModel)]="korisnik.mejl">
+        </div>
+
+        <div class="forma-red">
+            <label>Status:</label>
+
+            <select [(ngModel)]="korisnik.status">
+                <option value="pending">pending</option>
+                <option value="active">active</option>
+                <option value="rejected">rejected</option>
+            </select>
+        </div>
+
+
+        @if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
+
+        <div class="institucija">
+
+            <h3>Podaci institucije</h3>
+
+            <div class="forma-red">
+                <label>Naziv institucije:</label>
+                <input type="text" [(ngModel)]="korisnik.naziv_institucije">
+            </div>
+
+            <div class="forma-red">
+                <label>Adresa sjedišta:</label>
+                <input type="text" [(ngModel)]="korisnik.adresa_sedista">
+            </div>
+
+            <div class="forma-red">
+                <label>Matični broj:</label>
+                <input type="text" [(ngModel)]="korisnik.maticni_broj">
+            </div>
+
+            <div class="forma-red">
+                <label>PIB:</label>
+                <input type="text" [(ngModel)]="korisnik.pib">
+            </div>
+
+        </div>
+
+        }
+
+
+        <div class="dugmad">
+            <button (click)="sacuvaj()">SAČUVAJ</button>
+            <button class="nazad-dugme" (click)="nazad()">NAZAD</button>
+        </div>
+
+
+        @if (message) {
+        <p class="uspjeh">{{ message }}</p>
+        }
+
+        @if (error) {
+        <p class="greska">{{ error }}</p>
+        }
+
+    </div>
+
+</div>

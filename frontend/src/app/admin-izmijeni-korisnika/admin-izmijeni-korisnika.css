@@ -1,0 +1,59 @@
+.forma-kartica {
+    max-width: 650px;
+
+    padding: 25px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.forma-red {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 16px;
+}
+
+.forma-red input,
+.forma-red select {
+    width: 100%;
+}
+
+.institucija {
+    margin: 25px 0;
+
+    padding: 18px;
+
+    background-color: #faf8f3;
+
+    border: 1px solid var(--ivica);
+    border-radius: 6px;
+}
+
+.institucija h3 {
+    margin-top: 0;
+}
+
+.dugmad {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nazad-dugme {
+    background-color: #66706f;
+}
+
+.nazad-dugme:hover {
+    background-color: #4f5958;
+}
+
+@media (max-width: 700px) {
+
+    .forma-kartica {
+        padding: 16px;
+    }
+
+}

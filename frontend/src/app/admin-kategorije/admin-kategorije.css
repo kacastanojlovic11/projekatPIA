@@ -1,0 +1,57 @@
+.nova-kategorija {
+    margin-bottom: 35px;
+}
+
+.unos {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.unos input {
+    min-width: 250px;
+}
+
+.kategorije-lista {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 18px;
+}
+
+.kategorija-kartica {
+    padding: 20px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.kategorija-kartica h3 {
+    margin-top: 0;
+
+    color: var(--glavna);
+}
+
+.kategorija-kartica ul {
+    min-height: 40px;
+    padding-left: 20px;
+}
+
+@media (max-width: 700px) {
+
+    .unos {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .unos input,
+    .unos button {
+        width: 100%;
+    }
+
+}

@@ -47,6 +47,7 @@ let Korisnik = new Schema({
     
     naziv_institucije: String,
     adresa_sedista: String,
+    grad: String,
 
     maticni_broj: {
         type: String,

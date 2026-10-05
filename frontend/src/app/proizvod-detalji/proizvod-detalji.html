@@ -1,64 +1,204 @@
-<h1>{{ proizvod.naziv }}</h1>
-<h2>Galerija</h2>
-@if (glavnaSlika) {
-    <div>  <img [src]="glavnaSlika" width="150"> </div>
-    <br>
+<div class="detalji">
 
-    <div>
-        @for (slika of sveSlike; track slika) {
-            <img [src]="slika" width="80" (click)="izaberiSliku(slika)" class="thumbnail">
-        }
+    <h1>{{ proizvod.naziv }}</h1>
+
+    <div class="detalji-mreza">
+
+        <section class="galerija">
+
+            <h2>Galerija</h2>
+
+            @if (glavnaSlika) {
+
+            <div class="glavna-slika">
+                <img [src]="glavnaSlika">
+            </div>
+
+            <div class="thumbnail-lista">
+
+                @for (slika of sveSlike; track slika) {
+
+                <img [src]="slika" (click)="izaberiSliku(slika)" class="thumbnail">
+
+                }
+
+            </div>
+            }
+
+        </section>
+
+
+        <section class="osnovni-podaci">
+
+            <h2>Informacije</h2>
+
+            <p>
+                <b>Štamparija:</b>
+                {{ proizvod.nazivStamparije }}
+            </p>
+
+            <p>
+                <b>Grad:</b>
+                {{ proizvod.grad }}
+            </p>
+
+            <p>
+                <b>Kategorija:</b>
+                {{ proizvod.kategorija }}
+            </p>
+
+            <p>
+                <b>Cijena:</b>
+                {{ proizvod.jedinicnaCena }} RSD
+            </p>
+
+            <p>
+                <b>Lajkovi:</b>
+                {{ proizvod.brojLajkova }}
+            </p>
+
+            <p>
+                <b>Dislajkovi:</b>
+                {{ proizvod.brojDislajkova }}
+            </p>
+
+            <p>
+                <b>Opis:</b>
+                {{ proizvod.opis }}
+            </p>
+
+        </section>
+
     </div>
-}
-<p><b>Štamparija: </b>{{ proizvod.nazivStamparije }}</p>
-@if (klijentPrikaz && mapaUrl) {
-    <h3>Lokacija štamparije</h3>
-    <iframe [src]="mapaUrl" width="600" height="450" style="border:0" loading="lazy" title="Lokacija štamparije"></iframe>
-}
-<p><b>Grad: </b>{{ proizvod.grad }}</p>
-<p><b>Lajkovi: </b>{{ proizvod.brojLajkova }}</p>
-<p><b>Dislajkovi: </b>{{ proizvod.brojDislajkova }}</p>
-<p><b>Opis: </b>{{ proizvod.opis }}</p>
-<p><b>Kategorija: </b>{{ proizvod.kategorija }}</p>
-<p><b>Cijena: </b>{{ proizvod.jedinicnaCena }}</p>
 
-@if (klijentPrikaz) {
-    <hr>
-    <h2>Dodatne informacije</h2>
-    <p><b>Opis: </b>{{ proizvod.opis }}</p>
-    <p><b>Cijena po komadu: </b>{{ proizvod.jedinicnaCena }} RSD</p>
 
-    <label>Boja: </label>
-    <select [(ngModel)]="izabranaBoja">
-        @for (boja of boje; track boja) {
-            <option [value]="boja">{{ boja }}</option>
+    @if (klijentPrikaz && mapaUrl) {
+
+    <section class="sekcija">
+
+        <h2>Lokacija štamparije</h2>
+
+        <div class="mapa">
+            <iframe [src]="mapaUrl" loading="lazy" title="Lokacija štamparije">
+            </iframe>
+        </div>
+
+    </section>
+    }
+
+
+    <section class="sekcija">
+
+        <h2>Posljednji komentari</h2>
+
+        @if (komentari.length === 0) {
+
+        <p>Nema komentara.</p>
+
+        } @else {
+
+        @for (komentar of komentari; track komentar._id) {
+
+        <div class="komentar" [class.moj-komentar]="komentar.klijentId === ulogovaniKlijentId">
+
+            <div class="komentar-zaglavlje">
+                <b>{{ komentar.kor_ime }}</b>
+
+                <span>
+                    {{ komentar.datum | date:'dd.MM.yyyy HH:mm' }}
+                </span>
+            </div>
+
+            <p>{{ komentar.komentar }}</p>
+
+        </div>
+
         }
-    </select>
-    <br><br>
 
-    <label>Vrsta štampe: </label>
-    <select [(ngModel)]="izabranaUslugaID">
-        @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
-            <option [value]="usluga.idUsluge">{{ usluga.tipStampe }}</option>
         }
-    </select>
 
-    <h3>Dostupne usluge štampe</h3>
-    <table border="1">
-        <tr>
-            <th>Vrsta štampe</th>
-            <th>Maks. širina</th>
-            <th>Maks. visina</th>
-            <th>Dodatna cijena/kom.</th>
-        </tr>
+    </section>
 
-        @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
-            <tr>
-                <td>{{ usluga.tipStampe }}</td>
-                <td>{{ usluga.maxSirinaMm }} mm</td>
-                <td>{{ usluga.maxVisinaMm }} mm</td>
-                <td>{{ usluga.dodatnaCenaPoKomadu }} RSD</td>
-            </tr>
-        }
-    </table>
-}
+
+    @if (klijentPrikaz) {
+
+    <section class="sekcija">
+
+        <h2>Odabir proizvoda</h2>
+
+        <div class="izbori">
+
+            <div class="forma-red">
+                <label>Boja:</label>
+
+                <select [(ngModel)]="izabranaBoja">
+                    @for (boja of boje; track boja) {
+                    <option [value]="boja">
+                        {{ boja }}
+                    </option>
+                    }
+                </select>
+            </div>
+
+
+            <div class="forma-red">
+                <label>Vrsta štampe:</label>
+
+                <select [(ngModel)]="izabranaUslugaId">
+                    @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
+
+                    <option [value]="usluga.idUsluge">
+                        {{ usluga.tipStampe }}
+                    </option>
+
+                    }
+                </select>
+            </div>
+
+        </div>
+
+
+        <h3>Dostupne usluge štampe</h3>
+
+        <div class="tabela-okvir">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Vrsta štampe</th>
+                        <th>Maks. širina</th>
+                        <th>Maks. visina</th>
+                        <th>Dodatna cijena/kom.</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (usluga of proizvod.uslugeStampe; track usluga.idUsluge) {
+
+                    <tr>
+                        <td>{{ usluga.tipStampe }}</td>
+                        <td>{{ usluga.maxSirinaMm }} mm</td>
+                        <td>{{ usluga.maxVisinaMm }} mm</td>
+                        <td>
+                            {{ usluga.dodatnaCenaPoKomadu }} RSD
+                        </td>
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <button class="dalje-dugme" (click)="dalje()">
+            DALJE
+        </button>
+
+    </section>
+    }
+
+</div>

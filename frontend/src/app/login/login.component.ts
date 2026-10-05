@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -30,7 +30,7 @@ export class LoginComponent {
 
         if (response.korisnik.tip === "stamparija") {
           this.router.navigate(["stamparija"]);
-        }else {
+        }else if(response.korisnik.tip === "klijent_fizicko" || response.korisnik.tip === "klijent_pravno"){
           this.router.navigate(["klijent"]);
         }
       },

@@ -1,0 +1,40 @@
+.glavni-header {
+    background-color: var(--tekst);
+    color: white;
+    padding: 20px 4%;
+}
+
+.glavni-header h1 {
+    color: white;
+    margin: 0;
+    font-size: 26px;
+}
+
+.glavni-header span {
+    color: #d7dfdd;
+    font-size: 14px;
+}
+
+.glavni-footer {
+    margin-top: 40px;
+    padding: 18px;
+    text-align: center;
+    background-color: var(--tekst);
+    color: #d7dfdd;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+
+    .glavni-header {
+        padding: 15px 5%;
+    }
+
+    .glavni-header h1 {
+        font-size: 22px;
+    }
+
+    .glavni-footer {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,24 @@
+<h1>Dodavanje proizvoda iz JSON fajla</h1>
+<p> Izaberite lager listu u JSON formatu.</p>
+<input type="file" accept=".json,application/json" (change)="izabranFajl($event)">
+<br><br>
+
+<button (click)="ucitaj()">UČITAJ</button>
+@if (message) {
+    <p>{{ message }}</p>
+}
+@if (error) {
+    <p>{{ error }}</p>
+}
+@if (dodateSifre.length > 0) {
+    <h3>Dodati proizvodi:</h3>
+    <ul>
+        @for (sifra of dodateSifre; track sifra) {
+            <li>{{ sifra }}</li>
+        }
+    </ul>
+    <p>
+        Sljedeći korak je dodavanje
+        slika za ove proizvode.
+    </p>
+}

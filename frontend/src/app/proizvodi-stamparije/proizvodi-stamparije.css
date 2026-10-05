@@ -1,0 +1,36 @@
+.tabela-okvir {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.kolicina {
+    width: 90px;
+}
+
+.akcije {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+}
+
+.sekundarno-dugme {
+    background-color: #66706f;
+}
+
+.sekundarno-dugme:hover {
+    background-color: #4f5958;
+}
+
+@media (max-width: 700px) {
+
+    .akcije {
+        flex-direction: column;
+    }
+
+    .akcije button {
+        width: 100%;
+    }
+
+}

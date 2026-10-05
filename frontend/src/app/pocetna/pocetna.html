@@ -1,62 +1,122 @@
-<h1>Štamparija</h1>
-<h2>Opšte informacije</h2>
-<p>Broj registrovanih štamparija:{{ brojStamparija }}</p>
-<hr>
+<div class="pocetna">
 
-<h2>TOP 5 proizvoda</h2>
-<table border="1">
-    <tr>
-        <th>Naziv</th>
-        <th>Štamparija</th>
-        <th>Kategorija</th>
-        <th>Lajkovi</th>
-    </tr>
+    <h1>Štamparija</h1>
 
-    @for (proizvod of topProizvodi; track proizvod._id) {
-        <tr>
-            <td>{{ proizvod.naziv }}</td>
-            <td>{{ proizvod.nazivStamparije }}</td>
-            <td>{{ proizvod.kategorija }}</td>
-            <td>{{ proizvod.brojLajkova }}</td>
-        </tr>
-    }
-</table>
-<hr>
+    <section class="sekcija">
+        <h2>Opšte informacije</h2>
 
-<h2>Pretraga proizvoda</h2>
-<label>Naziv proizvoda:</label>
-<input type="text" [(ngModel)]="naziv">
-<br><br>
+        <div class="info-kartica">
+            <span class="broj">{{ brojStamparija }}</span>
+            <span>registrovanih štamparija</span>
+        </div>
+    </section>
 
-<label>Kategorija:</label>
-<select [(ngModel)]="kategorija">
-    <option>Sve kategorije</option>
-    @for (kat of kategorije; track kat) {
-        <option [value]="kat">{{ kat }}</option>
-    }
-</select>
-<br><br>
 
-<button (click)="pretrazi()">Pretraži</button>
-<hr>
+    <section class="sekcija">
+        <h2>TOP 5 proizvoda</h2>
 
-<h2>Rezultati pretrage</h2>
-<table border="1">
-    <tr>
-        <th (click)="sortirajPoNazivu()">Naziv @if (sortRastuce) {(A-Z)}@else {(Z-A)}</th>
-        <th>Kategorija</th>
-        <th>Štamparija</th>
-        <th></th>
-    </tr>
+        <div class="tabela-okvir">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Štamparija</th>
+                        <th>Kategorija</th>
+                        <th>Lajkovi</th>
+                    </tr>
+                </thead>
 
-    @for (proizvod of rezultati; track proizvod._id) {
-        <tr>
-            <td>{{ proizvod.naziv }}</td>
-            <td>{{ proizvod.kategorija }}</td>
-            <td>{{ proizvod.nazivStamparije }}</td>
-            <td>
-                <button (click)="detalji(proizvod)">DETALJI</button>
-            </td>
-        </tr>
-    }
-</table>
+                <tbody>
+                    @for (proizvod of topProizvodi; track proizvod._id) {
+                        <tr>
+                            <td>{{ proizvod.naziv }}</td>
+                            <td>{{ proizvod.nazivStamparije }}</td>
+                            <td>{{ proizvod.kategorija }}</td>
+                            <td>{{ proizvod.brojLajkova }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <section class="sekcija">
+        <h2>Pretraga proizvoda</h2>
+
+        <div class="pretraga-forma">
+
+            <div class="forma-red">
+                <label>Naziv proizvoda:</label>
+                <input type="text" [(ngModel)]="naziv">
+            </div>
+
+            <div class="forma-red">
+                <label>Kategorija:</label>
+
+                <select [(ngModel)]="kategorija">
+                    <option>Sve kategorije</option>
+
+                    @for (kat of kategorije; track kat) {
+                        <option [value]="kat">{{ kat }}</option>
+                    }
+                </select>
+            </div>
+
+            <button (click)="pretrazi()">Pretraži</button>
+
+        </div>
+    </section>
+
+
+    <section class="sekcija">
+
+        <h2>Rezultati pretrage</h2>
+
+        <div class="tabela-okvir">
+            <table>
+
+                <thead>
+                    <tr>
+                        <th
+                            class="sortiranje"
+                            (click)="sortirajPoNazivu()">
+
+                            Naziv
+
+                            @if (sortRastuce) {
+                                (A-Z)
+                            } @else {
+                                (Z-A)
+                            }
+
+                        </th>
+
+                        <th>Kategorija</th>
+                        <th>Štamparija</th>
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (proizvod of rezultati; track proizvod._id) {
+                        <tr>
+                            <td>{{ proizvod.naziv }}</td>
+                            <td>{{ proizvod.kategorija }}</td>
+                            <td>{{ proizvod.nazivStamparije }}</td>
+
+                            <td>
+                                <button (click)="detalji(proizvod)">
+                                    DETALJI
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </section>
+
+</div>

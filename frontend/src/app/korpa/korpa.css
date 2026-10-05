@@ -1,0 +1,88 @@
+.stamparija-korpa {
+    margin-bottom: 35px;
+
+    padding: 20px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.stamparija-korpa h2 {
+    margin-top: 0;
+}
+
+.tabela-okvir {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.medjuzbir {
+    margin-top: 15px;
+
+    text-align: right;
+
+    font-size: 16px;
+}
+
+.korpa-ukupno {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    max-width: 500px;
+
+    margin: 25px 0;
+    padding: 18px 20px;
+
+    background-color: #e5ece9;
+
+    border-left: 4px solid var(--glavna);
+    border-radius: 5px;
+}
+
+.korpa-ukupno strong {
+    font-size: 20px;
+}
+
+.ukloni-dugme {
+    background-color: #9b4646;
+}
+
+.ukloni-dugme:hover {
+    background-color: #793737;
+}
+
+.potvrdi-dugme {
+    padding: 11px 24px;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.prazna-korpa {
+    padding: 25px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+
+    .stamparija-korpa {
+        padding: 14px;
+    }
+
+    .korpa-ukupno {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+}

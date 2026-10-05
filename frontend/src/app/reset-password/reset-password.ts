@@ -41,8 +41,8 @@ export class ResetPassword {
       next: (response) => {
         this.message = response.message;
         setTimeout(()=> {
-          this.router.navigate([""]);
-        }, 1500);
+          this.router.navigate(["/login"]);
+        }, 500);
       }, error: (err) => {
         if (err.error && err.error.message) {
           this.error = err.error.message;

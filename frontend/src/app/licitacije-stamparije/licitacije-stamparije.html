@@ -1,0 +1,156 @@
+<div class="licitacije">
+
+    <h1>Licitacije</h1>
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+    @if (nabavke.length === 0) {
+
+    <div class="prazno">
+        <p>Trenutno nema aktivnih javnih nabavki.</p>
+    </div>
+
+    }
+
+    @for (nabavka of nabavke; track nabavka._id) {
+
+    <section class="licitacija-kartica">
+
+        <h2>
+            Javna nabavka
+        </h2>
+
+        <div class="osnovni-podaci">
+
+            <p>
+                <b>ID:</b>
+                {{ nabavka._id }}
+            </p>
+
+            <p>
+                <b>Institucija:</b>
+                {{ nabavka.nazivInstitucije }}
+            </p>
+
+            <p>
+                <b>Ističe:</b>
+                {{ nabavka.datumIsteka | date:'dd.MM.yyyy HH:mm' }}
+            </p>
+
+        </div>
+
+
+        <div class="tabela-okvir">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Traženi proizvod</th>
+                        <th>Količina</th>
+                        <th>Vaš proizvod</th>
+                        <th>Vaša cijena po komadu</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (
+                    stavka of nabavka.stavke;
+                    track $index;
+                    let i = $index
+                    ) {
+
+                    <tr>
+
+                        <td>
+                            <b>{{ stavka.nazivProizvoda }}</b>
+
+                            <br>
+
+                            <span class="pomocni-tekst">
+                                {{ stavka.kategorija }}
+                                /
+                                {{ stavka.potkategorija }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ stavka.kolicina }}
+                        </td>
+
+                        <td>
+
+                            <select [(ngModel)]="ponude[nabavka._id][i].ponudjeniProizvodSifra"
+                                [disabled]="nabavka.vecPonudio">
+
+                                <option value="">
+                                    Izaberite
+                                </option>
+
+                                @for (
+                                proizvod of proizvodiZaStavku(stavka);
+                                track proizvod.sifra
+                                ) {
+
+                                <option [value]="proizvod.sifra">
+                                    {{ proizvod.naziv }}
+                                    - lager:
+                                    {{ proizvod.kolicinaNaLageru }}
+                                </option>
+
+                                }
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <div class="cijena">
+
+                                <input type="number" min="1" [(ngModel)]="ponude[nabavka._id][i].jedinicnaCena"
+                                    [disabled]="nabavka.vecPonudio">
+
+                                <span>RSD</span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        @if (nabavka.vecPonudio) {
+
+        <p class="ponuda-poslata">
+            Ponuda je već poslata.
+        </p>
+
+        } @else {
+
+        <button (click)="posaljiPonudu(nabavka)">
+            POŠALJI PONUDU
+        </button>
+
+        }
+
+    </section>
+
+    }
+
+</div>

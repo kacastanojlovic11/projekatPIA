@@ -1,0 +1,115 @@
+<div class="korpa">
+
+    <h1>E-korpa</h1>
+
+    @if (korpaService.stavke.length === 0) {
+
+    <div class="prazna-korpa">
+        <p>Korpa je prazna.</p>
+    </div>
+
+    } @else {
+
+    @for (stamparijaId of dohvatiStamparije(); track stamparijaId) {
+
+    <section class="stamparija-korpa">
+
+        <h2>{{ nazivStamparije(stamparijaId) }}</h2>
+
+        <div class="tabela-okvir">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Proizvod</th>
+                        <th>Boja</th>
+                        <th>Štampa</th>
+                        <th>Količina</th>
+                        <th>Ukupna cijena</th>
+                        <th>Akcija</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (stavka of korpaService.stavke; track $index) {
+
+                    @if (stavka.stamparijaId === stamparijaId) {
+
+                    <tr>
+
+                        <td>
+                            {{ stavka.nazivProizvoda }}
+                        </td>
+
+                        <td>
+                            {{ stavka.boja }}
+                        </td>
+
+                        <td>
+                            {{ stavka.tipStampe }}
+                        </td>
+
+                        <td>
+                            {{ stavka.kolicina }}
+                        </td>
+
+                        <td>
+                            {{ stavka.ukupnaCena }} RSD
+                        </td>
+
+                        <td>
+                            <button class="ukloni-dugme" (click)="ukloni($index)">
+                                Ukloni
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    }
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p class="medjuzbir">
+            <b>Ukupno za štampariju:</b>
+            {{ ukupnoZaStampariju(stamparijaId) }} RSD
+        </p>
+
+    </section>
+
+    }
+
+
+    <div class="korpa-ukupno">
+
+        <span>Ukupno za cijelu korpu</span>
+
+        <strong>
+            {{ ukupnoKorpa() }} RSD
+        </strong>
+
+    </div>
+
+    <button class="potvrdi-dugme" (click)="potvrdi()">
+        POTVRDI
+    </button>
+
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+    }
+
+</div>

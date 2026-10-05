@@ -1,0 +1,29 @@
+.tabela-okvir {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.akcije {
+    display: flex;
+    gap: 6px;
+}
+
+.status {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    background-color: #e5ece9;
+
+    border-radius: 4px;
+
+    font-size: 13px;
+}
+
+.obrisi-dugme {
+    background-color: #9b4646;
+}
+
+.obrisi-dugme:hover {
+    background-color: #793737;
+}

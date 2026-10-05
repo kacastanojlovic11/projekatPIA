@@ -57,4 +57,19 @@ userRouter.route('/azurirajProfil').post(
     (req, res) => new UserController().azurirajProfil(req, res)
 );
 
+userRouter.route('/svi').get(
+    (req, res) => new UserController().dohvatiSve( req, res )
+);
+
+userRouter.route('/obrisi/:id').delete(
+    (req, res) => new UserController().obrisi( req, res )
+);
+
+
+userRouter.route('/admin/:id').get(
+    (req, res) => new UserController().dohvatiPoId(req, res)
+).put(
+    (req, res) => new UserController().azurirajAdmin(req, res)
+);
+
 export default userRouter;

@@ -1,0 +1,77 @@
+<h1>Arhiva proizvoda</h1>
+<label>Sortiraj po:</label>
+
+<select [(ngModel)]="sortiranje" (change)="sortiraj()">
+    <option value="datum">Datumu naručivanja</option>
+    <option value="naziv">Nazivu proizvoda</option>
+    <option value="kolicina">Količini</option>
+    <option value="stamparija">Štampariji</option>
+</select>
+
+<button (click)="promijeniSmjer()">
+    @if (rastuce) {
+    Rastuće
+    } @else {
+    Opadajuće
+    }
+</button>
+
+<br><br>
+
+@if (stavke.length === 0) {
+<p>Nema isporučenih ili primljenih proizvoda.</p>
+} @else {
+<table border="1">
+    <tr>
+        <th>Proizvod</th>
+        <th>Količina</th>
+        <th>Štamparija</th>
+        <th>Datum naručivanja</th>
+        <th>Status</th>
+        <th>Akcija</th>
+    </tr>
+
+    @for (stavka of stavke; track $index) {
+    <tr>
+        <td>{{ stavka.nazivProizvoda }}</td>
+        <td>{{ stavka.kolicina }}</td>
+        <td>{{ stavka.nazivStamparije }}</td>
+        <td>{{ stavka.datumNarucivanja }}</td>
+        <td>{{ stavka.status }}</td>
+        <td>
+            @if (stavka.status === "isporuceno" ) {
+            <button (click)="primi(stavka)">PRIMLJENO</button>
+            }
+            @if (stavka.status === "primljeno") {
+            <br>
+            <textarea [(ngModel)]="komentari[stavka.sifra]" placeholder="Komentar"></textarea>
+            <br>
+            <button (click)="ocijeni(stavka, 'like')" [disabled]="reakcije[stavka.sifra] === 'like'">
+                SVIĐA MI SE
+            </button>
+
+            <button (click)="ocijeni(stavka, 'dislike')" [disabled]="reakcije[stavka.sifra] === 'dislike'">
+                NE SVIĐA MI SE
+            </button>
+
+            @if (reakcije[stavka.sifra] === "like") {
+            <p class="uspjeh">Označili ste: SVIĐA MI SE</p>
+            }
+
+            @if (reakcije[stavka.sifra] === "dislike") {
+            <p>Označili ste: NE SVIĐA MI SE</p>
+            }
+            }
+        </td>
+    </tr>
+    }
+</table>
+}
+
+@if (poruka) {
+<p>{{ poruka }}</p>
+}
+
+@if (greska) {
+<p>{{ greska }}</p>
+}

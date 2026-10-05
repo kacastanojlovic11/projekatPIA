@@ -1,0 +1,87 @@
+<div class="proizvodi-stamparije">
+
+    <h1>Proizvodi i usluge</h1>
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+    <div class="tabela-okvir">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Šifra</th>
+                    <th>Naziv</th>
+                    <th>Kategorija</th>
+                    <th>Potkategorija</th>
+                    <th>Cijena</th>
+                    <th>Količina</th>
+                    <th>Sačuvaj</th>
+                    <th>Slike</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for (proizvod of proizvodi; track proizvod.sifra) {
+
+                <tr>
+
+                    <td>{{ proizvod.sifra }}</td>
+
+                    <td>{{ proizvod.naziv }}</td>
+
+                    <td>{{ proizvod.kategorija }}</td>
+
+                    <td>{{ proizvod.potkategorija }}</td>
+
+                    <td>
+                        {{ proizvod.jedinicnaCena }} RSD
+                    </td>
+
+                    <td>
+                        <input class="kolicina" type="number" min="0" step="1" [(ngModel)]="proizvod.kolicinaNaLageru">
+                    </td>
+
+                    <td>
+                        <button (click)="sacuvajKolicinu(proizvod)">
+                            SAČUVAJ
+                        </button>
+                    </td>
+
+                    <td>
+                        <button class="sekundarno-dugme" (click)="dodajSlike(proizvod)">
+                            DODAJ SLIKE
+                        </button>
+                    </td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="akcije">
+
+        <button (click)="dodajProizvod()">
+            DODAJ PROIZVOD
+        </button>
+
+        <button class="sekundarno-dugme" (click)="dodajIzJson()">
+            DODAJ IZ JSON FAJLA
+        </button>
+
+    </div>
+
+</div>

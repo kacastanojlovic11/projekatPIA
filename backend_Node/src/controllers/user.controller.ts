@@ -87,25 +87,27 @@ export class UserController {
             const username = req.body.username;
             const password = req.body.password;
 
-            const korisnik = await KorisnikModel.findOne({kor_ime: username, tip: "admin"});
+            const korisnik = await KorisnikModel.findOne({ kor_ime: username, tip: "admin" });
 
             if (!korisnik) {
-                return res.status(401).json({message: "Pogrešno korisničko ime ili lozinka."});
+                return res.status(401).json({ message: "Pogrešno korisničko ime ili lozinka." });
             }
 
             const dobraLozinka = await bcrypt.compare(password, korisnik.lozinka);
 
             if (!dobraLozinka) {
-                return res.status(401).json({message: "Pogrešno korisničko ime ili lozinka."});
+                return res.status(401).json({ message: "Pogrešno korisničko ime ili lozinka." });
             }
 
-            return res.status(200).json({korisnik: {
-                _id: korisnik._id,
-                kor_ime: korisnik.kor_ime,
-                ime: korisnik.ime,
-                prezime: korisnik.prezime,
-                tip: korisnik.tip
-            }});
+            return res.status(200).json({
+                korisnik: {
+                    _id: korisnik._id,
+                    kor_ime: korisnik.kor_ime,
+                    ime: korisnik.ime,
+                    prezime: korisnik.prezime,
+                    tip: korisnik.tip
+                }
+            });
         } catch (err) {
             console.log(err);
             return res.status(500).json({ message: "Greška prilikom prijavljivanja." });
@@ -126,14 +128,14 @@ export class UserController {
             const adresaSedista = req.body.adresaSedista;
             const maticniBroj = req.body.maticniBroj;
             const pib = req.body.pib;
-
+            const grad = req.body.grad;
 
             if (!username || !password || !ime || !prezime || !telefon || !email || !tip) {
-                return res.status(400).json({message: "Nisu uneseni svi obavezni podaci."});
+                return res.status(400).json({ message: "Nisu uneseni svi obavezni podaci." });
             }
 
             if (tip !== "klijent_fizicko" && tip !== "klijent_pravno" && tip !== "stamparija") {
-                return res.status(400).json({message: "Neispravan tip korisnika."});
+                return res.status(400).json({ message: "Neispravan tip korisnika." });
             }
 
             const passwordRegex = /^(?=.{8,12}$)(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])[A-Za-z].*$/;
@@ -144,11 +146,26 @@ export class UserController {
                 });
             }
 
+
+            const telefonRegex = /^[0-9+\-\s\/]{6,20}$/;
+
+            if (!telefonRegex.test(telefon)) {
+                return res.status(400).json({
+                    message: "Broj telefona nije ispravan."
+                });
+            }
+
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailRegex.test(email)) {
                 return res.status(400).json({
                     message: "Email adresa nije ispravna."
+                });
+            }
+
+            if (tip === "stamparija" && !grad) {
+                return res.status(400).json({
+                    message: "Grad nije unesen."
                 });
             }
 
@@ -254,6 +271,8 @@ export class UserController {
 
                 adresa_sedista: tip === "klijent_fizicko" ? null : adresaSedista,
 
+                grad: tip === "stamparija" ? grad : null,
+
                 maticni_broj: tip === "klijent_fizicko" ? null : maticniBroj,
 
                 pib: tip === "klijent_fizicko" ? null : pib
@@ -315,15 +334,15 @@ export class UserController {
             const password = req.body.password;
             const passwordRegex = /^(?=.{8,12}$)(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])[A-Za-z].*$/;
             if (!passwordRegex.test(password)) {
-                return res.status(400).json({message: "Lozinka mora imati 8-12 karaktera, početi slovom i sadržati veliko slovo, broj i specijalni karakter."});
+                return res.status(400).json({ message: "Lozinka mora imati 8-12 karaktera, početi slovom i sadržati veliko slovo, broj i specijalni karakter." });
             }
 
             const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
-            const korisnik = await KorisnikModel.findOne({resetPasswordToken: tokenHash, resetPasswordExpires: { $gt: new Date()}});
+            const korisnik = await KorisnikModel.findOne({ resetPasswordToken: tokenHash, resetPasswordExpires: { $gt: new Date() } });
 
             if (!korisnik) {
-                return res.status(400).json({message: "Link nije ispravan ili je istekao."});
+                return res.status(400).json({ message: "Link nije ispravan ili je istekao." });
             }
 
             korisnik.lozinka = await bcrypt.hash(password, 10);
@@ -332,7 +351,7 @@ export class UserController {
             korisnik.resetPasswordExpires = null;
             await korisnik.save();
 
-            return res.status(200).json({ message: "Lozinka je uspješno promijenjena."});
+            return res.status(200).json({ message: "Lozinka je uspješno promijenjena." });
         }
         catch (err) {
             console.log(err);
@@ -342,19 +361,19 @@ export class UserController {
 
     dohvatiNeodobrene = async (req: express.Request, res: express.Response) => {
         try {
-            const korisnici = await KorisnikModel.find({status: "pending"});
+            const korisnici = await KorisnikModel.find({ status: "pending" });
             return res.json(korisnici);
         }
         catch (err) {
             console.log(err);
-            return res.status(500).json({message: "Greška."});
+            return res.status(500).json({ message: "Greška." });
         }
     }
 
     prihvatiRegistraciju = async (req: express.Request, res: express.Response) => {
         try {
             const username = req.body.username;
-            const korisnik = await KorisnikModel.findOne({kor_ime: username});
+            const korisnik = await KorisnikModel.findOne({ kor_ime: username });
 
             if (!korisnik) {
                 return res.status(404).json({
@@ -363,17 +382,17 @@ export class UserController {
             }
             korisnik.status = "active";
             await korisnik.save();
-            return res.json({message: "Registracija je prihvaćena."});
-        }catch (err) {
+            return res.json({ message: "Registracija je prihvaćena." });
+        } catch (err) {
             console.log(err);
-            return res.status(500).json({message: "Greška."});
+            return res.status(500).json({ message: "Greška." });
         }
     }
 
     odbijRegistraciju = async (req: express.Request, res: express.Response) => {
         try {
             const username = req.body.username;
-            const korisnik = await KorisnikModel.findOne({kor_ime: username});
+            const korisnik = await KorisnikModel.findOne({ kor_ime: username });
 
             if (!korisnik) {
                 return res.status(404).json({
@@ -382,10 +401,10 @@ export class UserController {
             }
             korisnik.status = "rejected";
             await korisnik.save();
-            return res.json({message: "Registracija je odbijena."});
-        }catch (err) {
+            return res.json({ message: "Registracija je odbijena." });
+        } catch (err) {
             console.log(err);
-            return res.status(500).json({message: "Greška."});
+            return res.status(500).json({ message: "Greška." });
         }
     }
 
@@ -393,7 +412,7 @@ export class UserController {
     dohvatiProfil = async (req: express.Request, res: express.Response) => {
         try {
             const username = req.params.username;
-            const korisnik = await KorisnikModel.findOne({kor_ime: username}).select("-lozinka -resetPasswordToken -resetPasswordExpires");
+            const korisnik = await KorisnikModel.findOne({ kor_ime: username }).select("-lozinka -resetPasswordToken -resetPasswordExpires");
 
             if (!korisnik) {
                 return res.status(404).json({ message: "Korisnik nije pronađen." });
@@ -401,7 +420,7 @@ export class UserController {
             return res.json(korisnik);
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ message: "Greška."});
+            return res.status(500).json({ message: "Greška." });
         }
     }
 
@@ -418,30 +437,80 @@ export class UserController {
             const nazivInstitucije = req.body.nazivInstitucije;
             const adresaSedista = req.body.adresaSedista;
 
-            const maticniBroj =  req.body.maticniBroj;
+            const maticniBroj = req.body.maticniBroj;
 
             const pib = req.body.pib;
 
-            const korisnik = await KorisnikModel.findOne({kor_ime: username});
+            const korisnik = await KorisnikModel.findOne({ kor_ime: username });
 
             if (!korisnik) {
                 return res.status(404).json({ message: "Korisnik nije pronađen." });
             }
 
             if (!ime || !prezime || !telefon || !email) {
-                return res.status(400).json({ message: "Nisu uneseni svi podaci."});
+                return res.status(400).json({ message: "Nisu uneseni svi podaci." });
+            }
+
+            const telefonRegex = /^[0-9+\-\s\/]{6,20}$/;
+
+            if (!telefonRegex.test(telefon)) {
+                return res.status(400).json({
+                    message: "Broj telefona nije ispravan."
+                });
             }
 
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailRegex.test(email)) {
-                return res.status(400).json({message: "Email adresa nije ispravna."});
+                return res.status(400).json({ message: "Email adresa nije ispravna." });
             }
 
-            const korisnikSaEmailom = await KorisnikModel.findOne({mejl: email, kor_ime: {$ne: username}});
+
+            const korisnikSaEmailom = await KorisnikModel.findOne({ mejl: email, kor_ime: { $ne: username } });
 
             if (korisnikSaEmailom) {
-                return res.status(400).json({ message: "Već postoji korisnik sa ovom email adresom."});
+                return res.status(400).json({ message: "Već postoji korisnik sa ovom email adresom." });
+            }
+
+            if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
+
+                if (!nazivInstitucije || !adresaSedista || !maticniBroj || !pib) {
+                    return res.status(400).json({
+                        message: "Nisu uneseni svi podaci o instituciji."
+                    });
+                }
+
+                if (!/^\d{8}$/.test(maticniBroj)) {
+                    return res.status(400).json({
+                        message: "Matični broj mora imati tačno 8 cifara."
+                    });
+                }
+
+                if (!/^[1-9]\d{8}$/.test(pib)) {
+                    return res.status(400).json({
+                        message: "PIB mora imati 9 cifara i ne smije počinjati nulom."
+                    });
+                }
+
+                const postojiMaticni = await KorisnikModel.findOne({ maticni_broj: maticniBroj, _id: { $ne: korisnik._id } });
+
+                if (postojiMaticni) {
+                    return res.status(400).json({
+                        message: "Matični broj je već u upotrebi."
+                    });
+                }
+
+                const postojiPib =
+                    await KorisnikModel.findOne({
+                        pib: pib,
+                        _id: { $ne: korisnik._id }
+                    });
+
+                if (postojiPib) {
+                    return res.status(400).json({
+                        message: "PIB je već u upotrebi."
+                    });
+                }
             }
 
             let profilnaSlika = korisnik.profilna_slika;
@@ -455,7 +524,7 @@ export class UserController {
 
                 if (!dozvoljeniFormati.includes(req.file.mimetype)) {
                     fs.unlinkSync(req.file.path);
-                    return res.status(400).json({message:"Profilna slika mora biti JPG, PNG ili GIF."});
+                    return res.status(400).json({ message: "Profilna slika mora biti JPG, PNG ili GIF." });
                 }
 
                 const imageBuffer = fs.readFileSync(req.file.path);
@@ -463,7 +532,7 @@ export class UserController {
 
                 if (!dimensions.width || !dimensions.height || dimensions.width < 100 || dimensions.height < 100 || dimensions.width > 250 || dimensions.height > 250) {
                     fs.unlinkSync(req.file.path);
-                    return res.status(400).json({message: "Profilna slika mora biti dimenzija od 100x100 do 250x250 piksela."});
+                    return res.status(400).json({ message: "Profilna slika mora biti dimenzija od 100x100 do 250x250 piksela." });
                 }
                 profilnaSlika = req.file.filename;
             }
@@ -476,7 +545,7 @@ export class UserController {
             korisnik.profilna_slika = profilnaSlika;
 
 
-            if (korisnik.tip === "klijent_pravno") {
+            if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
                 korisnik.naziv_institucije = nazivInstitucije;
                 korisnik.adresa_sedista = adresaSedista;
                 korisnik.maticni_broj = maticniBroj;
@@ -486,26 +555,204 @@ export class UserController {
             await korisnik.save();
 
 
-            return res.json({message:"Podaci su uspješno ažurirani.",
-                            korisnik: {
-                                _id: korisnik._id,
-                                kor_ime: korisnik.kor_ime,
-                                ime: korisnik.ime,
-                                prezime: korisnik.prezime,
-                                telefon: korisnik.telefon,
-                                mejl: korisnik.mejl,
-                                profilna_slika: korisnik.profilna_slika,
-                                tip: korisnik.tip,
-                                status: korisnik.status,
-                                naziv_institucije: korisnik.naziv_institucije,
-                                adresa_sedista: korisnik.adresa_sedista,
-                                maticni_broj: korisnik.maticni_broj,
-                                pib: korisnik.pib
-                            }
+            return res.json({
+                message: "Podaci su uspješno ažurirani.",
+                korisnik: {
+                    _id: korisnik._id,
+                    kor_ime: korisnik.kor_ime,
+                    ime: korisnik.ime,
+                    prezime: korisnik.prezime,
+                    telefon: korisnik.telefon,
+                    mejl: korisnik.mejl,
+                    profilna_slika: korisnik.profilna_slika,
+                    tip: korisnik.tip,
+                    status: korisnik.status,
+                    naziv_institucije: korisnik.naziv_institucije,
+                    adresa_sedista: korisnik.adresa_sedista,
+                    maticni_broj: korisnik.maticni_broj,
+                    pib: korisnik.pib
+                }
             });
         } catch (err) {
-        console.log(err);
-        return res.status(500).json({message:"Greška prilikom ažuriranja profila."});
+            console.log(err);
+            return res.status(500).json({ message: "Greška prilikom ažuriranja profila." });
         }
-    }  
+    }
+
+    dohvatiSve = async (req: express.Request, res: express.Response) => {
+        try {
+            const korisnici = await KorisnikModel.find({ tip: { $ne: "admin" } }).select("-lozinka -resetToken -resetTokenExpiry");
+            return res.json(korisnici);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška prilikom dohvatanja korisnika."
+            });
+        }
+    }
+
+    obrisi = async (req: express.Request, res: express.Response) => {
+
+        try {
+            const id = req.params.id;
+            const korisnik = await KorisnikModel.findById(id);
+            if (!korisnik) {
+                return res.status(404).json({
+                    message: "Korisnik nije pronađen."
+                });
+            }
+            if (korisnik.tip === "admin") {
+                return res.status(400).json({
+                    message: "Administrator se ne može obrisati."
+                });
+            }
+            await KorisnikModel.deleteOne({ _id: id });
+            return res.json({
+                message: "Korisnik je uspješno obrisan."
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška prilikom brisanja korisnika."
+            });
+        }
+    }
+    dohvatiPoId = async (req: express.Request, res: express.Response) => {
+        try {
+            const id = req.params.id;
+            const korisnik = await KorisnikModel.findById(id).select("-lozinka -resetToken -resetTokenExpiry");
+
+            if (!korisnik) {
+                return res.status(404).json({
+                    message: "Korisnik nije pronađen."
+                });
+            }
+            return res.json(korisnik);
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška prilikom dohvatanja korisnika."
+            });
+        }
+    }
+
+    azurirajAdmin = async (req: express.Request, res: express.Response) => {
+        try {
+            const id = req.params.id;
+            const korisnik = await KorisnikModel.findById(id);
+
+            if (!korisnik) {
+                return res.status(404).json({
+                    message: "Korisnik nije pronađen."
+                });
+            }
+
+            if (korisnik.tip === "admin") {
+                return res.status(400).json({
+                    message: "Administratorski nalog se ovdje ne mijenja."
+                });
+            }
+
+            if (!req.body.ime || !req.body.prezime || !req.body.telefon || !req.body.mejl) {
+                return res.status(400).json({
+                    message: "Nisu uneseni svi obavezni podaci."
+                });
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(req.body.mejl)) {
+                return res.status(400).json({
+                    message: "Email adresa nije ispravna."
+                });
+            }
+
+            const telefonRegex = /^[0-9+\-\s\/]{6,20}$/;
+
+            if (!telefonRegex.test(req.body.telefon)) {
+                return res.status(400).json({
+                    message: "Broj telefona nije ispravan."
+                });
+            }
+
+            const postojiMejl = await KorisnikModel.findOne({ mejl: req.body.mejl, _id: { $ne: id } });
+
+            if (postojiMejl) {
+                return res.status(400).json({
+                    message: "Email adresa je već u upotrebi."
+                });
+            }
+
+            if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
+                if (!/^\d{8}$/.test(req.body.maticni_broj)) {
+                    return res.status(400).json({
+                        message: "Matični broj mora imati tačno 8 cifara."
+                    });
+                }
+
+                if (!/^[1-9]\d{8}$/.test(req.body.pib)) {
+                    return res.status(400).json({
+                        message: "PIB mora imati 9 cifara i ne smije počinjati nulom."
+                    });
+                }
+
+                const postojiMaticni = await KorisnikModel.findOne({
+                    maticni_broj: req.body.maticni_broj,
+                    _id: { $ne: id }
+                });
+
+                if (postojiMaticni) {
+                    return res.status(400).json({
+                        message: "Matični broj je već u upotrebi."
+                    });
+                }
+
+                const postojiPib = await KorisnikModel.findOne({
+                    pib: req.body.pib,
+                    _id: { $ne: id }
+                });
+
+                if (postojiPib) {
+                    return res.status(400).json({
+                        message: "PIB je već u upotrebi."
+                    });
+                }
+            }
+            const dozvoljeniStatusi = [
+                "pending",
+                "active",
+                "rejected"
+            ];
+
+            if (!dozvoljeniStatusi.includes(req.body.status)) {
+                return res.status(400).json({
+                    message: "Status nije ispravan."
+                });
+            }
+            korisnik.ime = req.body.ime;
+            korisnik.prezime = req.body.prezime;
+            korisnik.telefon = req.body.telefon;
+            korisnik.mejl = req.body.mejl;
+            korisnik.status = req.body.status;
+            if (korisnik.tip === "klijent_pravno" || korisnik.tip === "stamparija") {
+                korisnik.naziv_institucije = req.body.naziv_institucije;
+                korisnik.adresa_sedista = req.body.adresa_sedista;
+                korisnik.maticni_broj = req.body.maticni_broj;
+                korisnik.pib = req.body.pib;
+            }
+            await korisnik.save();
+            return res.json({
+                message: "Korisnik je uspješno izmijenjen.",
+                korisnik: korisnik
+            });
+
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Greška prilikom izmjene korisnika."
+            });
+        }
+    }
 }

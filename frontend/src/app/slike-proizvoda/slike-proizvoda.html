@@ -1,0 +1,17 @@
+<h1>Slike proizvoda {{ sifra }}</h1>
+<label>Glavna slika:</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaGlavnaSlika($event)">
+<br><br>
+
+<label>Dodatne slike (najviše 3):</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" multiple (change)="izabraneDodatneSlike($event)">
+<br><br>
+
+<button (click)="sacuvaj()">SAČUVAJ</button>
+
+@if (message) {
+    <p>{{ message }}</p>
+}
+@if (error) {
+    <p>{{ error }}</p>
+}

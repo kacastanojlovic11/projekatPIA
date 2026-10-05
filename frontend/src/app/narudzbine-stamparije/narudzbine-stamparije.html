@@ -1,0 +1,108 @@
+<div class="narudzbine-stamparije">
+
+    <h1>Naručeni proizvodi</h1>
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+    @if (narudzbine.length === 0) {
+
+    <div class="prazno">
+        <p>Trenutno nema narudžbina.</p>
+    </div>
+
+    } @else {
+
+    <div class="tabela-okvir">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID fakture</th>
+                    <th>Datum</th>
+                    <th>Proizvodi</th>
+                    <th>Ukupno</th>
+                    <th>Status</th>
+                    <th>Akcija</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for (narudzbina of narudzbine; track narudzbina._id) {
+
+                <tr>
+
+                    <td>{{ narudzbina._id }}</td>
+
+                    <td>
+                        {{ narudzbina.datumNarucivanja | date:'dd.MM.yyyy HH:mm' }}
+                    </td>
+
+                    <td>
+                        <ol>
+                            @for (stavka of narudzbina.stavke; track $index) {
+                            <li>
+                                {{ stavka.nazivProizvoda }}
+                                ({{ stavka.kolicina }})
+                            </li>
+                            }
+                        </ol>
+                    </td>
+
+                    <td>
+                        {{ narudzbina.ukupanIznos }} RSD
+                    </td>
+
+                    <td>
+                        <span class="status">
+                            {{ narudzbina.status }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        @if (narudzbina.status === "placeno") {
+
+                        <button (click)="promijeniStatus(narudzbina, 'u_stampi')">
+                            U ŠTAMPU
+                        </button>
+
+                        }
+
+                        @if (narudzbina.status === "u_stampi") {
+
+                        <button (click)="promijeniStatus(narudzbina, 'isporuceno')">
+                            ISPORUČENO
+                        </button>
+
+                        }
+
+                        @if (
+                        narudzbina.status === "isporuceno" ||
+                        narudzbina.status === "primljeno"
+                        ) {
+                        -
+                        }
+
+                    </td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    }
+
+</div>

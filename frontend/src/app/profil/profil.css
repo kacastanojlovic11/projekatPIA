@@ -1,3 +1,93 @@
-.error {
-  color: red;
+.profil {
+  width: 100%;
+}
+
+.profil-podaci {
+  max-width: 650px;
+
+  padding: 25px;
+  margin-bottom: 35px;
+
+  background-color: var(--povrsina);
+
+  border: 1px solid var(--ivica);
+  border-radius: 7px;
+}
+
+.profilna-slika {
+  margin-bottom: 20px;
+}
+
+.profilna-slika img {
+  width: 150px;
+  height: 150px;
+
+  object-fit: cover;
+
+  border: 1px solid var(--ivica);
+  border-radius: 7px;
+}
+
+.forma-red {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 16px;
+}
+
+.forma-red input {
+  width: 100%;
+}
+
+.institucija {
+  margin: 25px 0;
+
+  padding: 18px;
+
+  background-color: #faf8f3;
+
+  border: 1px solid var(--ivica);
+  border-radius: 6px;
+}
+
+.institucija h3 {
+  margin-top: 0;
+}
+
+.narudzbine {
+  margin-top: 30px;
+}
+
+.tabela-okvir {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sortiranje {
+  cursor: pointer;
+}
+
+.sortiranje:hover {
+  background-color: #d9e4e0;
+}
+
+.dugme-otkazi {
+  background-color: #9b4646;
+}
+
+.dugme-otkazi:hover {
+  background-color: #793737;
+}
+
+@media (max-width: 700px) {
+
+  .profil-podaci {
+    padding: 16px;
+  }
+
+  .profilna-slika img {
+    width: 120px;
+    height: 120px;
+  }
+
 }

@@ -1,0 +1,113 @@
+<h1>Dodaj proizvod</h1>
+
+<table>
+    <tr>
+        <td>Šifra:</td>
+        <td><input type="text" [(ngModel)]="sifra"></td>
+    </tr>
+
+    <tr>
+        <td>Naziv:</td>
+        <td><input type="text" [(ngModel)]="naziv"></td>
+    </tr>
+
+    <tr>
+        <td>Opis:</td>
+        <td><textarea [(ngModel)]="opis"></textarea></td>
+    </tr>
+
+    <tr>
+        <td>Kategorija:</td>
+        <td>
+            <select [(ngModel)]="kategorija" (change)="promijenjenaKategorija()">
+                <option value="">Izaberite kategoriju</option>
+                @for (kat of kategorije; track kat.naziv ) {
+                    <option [value]="kat.naziv">{{ kat.naziv }}</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Potkategorija:</td>
+        <td>
+            <select [(ngModel)]="potkategorija">
+                <option value="">Izaberite potkategoriju</option>
+                @for (pot of potkategorije; track pot) {
+                    <option [value]="pot">{{ pot }}</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Jedinična cijena:</td>
+        <td><input type="number" min="0" [(ngModel)]="jedinicnaCena"></td>
+    </tr>
+
+    <tr>
+        <td>Količina na lageru:</td>
+        <td><input type="number" min="0" step="1" [(ngModel)]="kolicinaNaLageru">
+        </td>
+    </tr>
+
+    <tr>
+        <td>Dostupne boje:</td>
+        <td><input type="text" [(ngModel)]="boje" placeholder="Bela, Crna, Plava"></td>
+    </tr>
+
+    <tr>
+        <td>Grad:</td>
+        <td>
+            <input type="text" [(ngModel)] = "grad">
+        </td>
+    </tr>
+</table>
+
+<h2>Usluge štampe</h2>
+@for (usluga of usluge; track $index; let i = $index) {
+
+    <div>
+        <p>Usluga {{ i + 1 }}</p>
+        <label>ID usluge:</label>
+        <input type="text" [(ngModel)]="usluga.idUsluge">
+        <br>
+
+        <label>Tip štampe:</label>
+        <input type="text" [(ngModel)]="usluga.tipStampe">
+        <br>
+
+        <label>Dodatna cijena:</label>
+        <input type="number" min="0" [(ngModel)]="usluga.dodatnaCenaPoKomadu">
+        <br>
+
+        <label>Maksimalna širina (mm):</label>
+        <input type="number" min="0" [(ngModel)]="usluga.maxSirinaMm">
+        <br>
+
+        <label>Maksimalna visina (mm):</label>
+        <input type="number" min="0" [(ngModel)]="usluga.maxVisinaMm">
+        <br>
+
+        <button type="button" (click)="ukloniUslugu(i)">UKLONI USLUGU</button>
+    </div>
+    <hr>
+}
+<button type="button" (click)="dodajUslugu()">DODAJ USLUGU</button>
+
+
+<h2>Slike proizvoda</h2>
+<label>Glavna slika:</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaGlavnaSlika($event)">
+<br><br>
+
+<label> Dodatne slike (najviše 3):</label>
+<input type="file" accept=".jpg,.jpeg,.png,.gif" multiple (change)="izabraneDodatneSlike($event)">
+
+@if (message) {
+    <p>{{ message }}</p>
+}
+
+@if (error) {
+    <p>{{ error }}</p>
+}
+
+<button (click)="sacuvaj()">SAČUVAJ</button>

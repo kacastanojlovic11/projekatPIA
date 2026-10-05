@@ -1,0 +1,7 @@
+<h1>Plaćanje je otkazano</h1>
+<p>Narudžbine su sačuvane, ali nisu plaćene.</p>
+<button (click)="ponovo()">POKUŠAJ PONOVO</button>
+<button (click)="profil()">PROFIL</button>
+@if (greska) {
+    <p>{{ greska }}</p>
+}

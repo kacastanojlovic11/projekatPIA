@@ -1,0 +1,58 @@
+.licitacija-kartica {
+    margin-bottom: 30px;
+    padding: 22px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.licitacija-kartica h2 {
+    margin-top: 0;
+}
+
+.osnovni-podaci {
+    margin-bottom: 20px;
+}
+
+.tabela-okvir {
+    width: 100%;
+    overflow-x: auto;
+
+    margin-bottom: 15px;
+}
+
+.cijena {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cijena input {
+    width: 110px;
+}
+
+.ponuda-poslata {
+    color: var(--uspjeh);
+    font-weight: 600;
+}
+
+.prazno {
+    padding: 25px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+
+    .licitacija-kartica {
+        padding: 14px;
+    }
+
+}

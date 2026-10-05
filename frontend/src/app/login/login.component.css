@@ -1,3 +1,22 @@
-.error {
-  color: red;
+.forma-kartica {
+  max-width: 420px;
+  margin: 40px auto;
+
+  padding: 25px;
+
+  background-color: var(--povrsina);
+
+  border: 1px solid var(--ivica);
+  border-radius: 7px;
+}
+
+.forma-red {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 16px;
+}
+
+.forma-red input {
+  width: 100%;
 }

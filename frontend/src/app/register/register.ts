@@ -35,6 +35,8 @@ export class Register {
   error: string = "";
   message: string = "";
 
+  grad: string = "";
+
   register() {
     this.error = "";
     this.message = "";
@@ -70,10 +72,15 @@ export class Register {
         this.error = "PIB mora imati 9 cifara i ne smije počinjati nulom.";
         return;
       }
+
+      if (this.tip === "stamparija" && this.grad === "") {
+        this.error = "Morate unijeti grad.";
+        return;
+      }
     }
 
 
-    this.userService.register(this.username, this.password, this.ime, this.prezime, this.telefon, this.email, this.profilnaSlika, this.tip, this.nazivInstitucije, this.adresaSedista, this.maticniBroj, this.pib).subscribe({ next: (response) => {
+    this.userService.register(this.username, this.password, this.ime, this.prezime, this.telefon, this.email, this.profilnaSlika, this.tip, this.nazivInstitucije, this.adresaSedista, this.maticniBroj, this.pib, this.grad).subscribe({ next: (response) => {
         this.message = response.message;
         this.error = "";
 

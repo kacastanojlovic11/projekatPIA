@@ -16,6 +16,7 @@ export default class User {
 
     naziv_institucije: string | null = null;
     adresa_sedista: string | null = null;
+    grad: string | null = null;
     maticni_broj: string | null = null;
     pib: string | null = null;
 

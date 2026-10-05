@@ -1,0 +1,57 @@
+.sekcija {
+    margin-bottom: 35px;
+}
+
+.info-kartica {
+    display: inline-flex;
+    flex-direction: column;
+
+    padding: 18px 25px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.broj {
+    color: var(--glavna);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.pretraga-forma {
+    max-width: 550px;
+
+    padding: 20px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.forma-red {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 15px;
+}
+
+.forma-red input,
+.forma-red select {
+    width: 100%;
+}
+
+.tabela-okvir {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.sortiranje {
+    cursor: pointer;
+}
+
+.sortiranje:hover {
+    background-color: #d9e4e0;
+}

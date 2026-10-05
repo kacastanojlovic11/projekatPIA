@@ -1,0 +1,58 @@
+.grafikon-kartica {
+    margin-bottom: 30px;
+    padding: 22px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.grafikon-kartica h2 {
+    margin-top: 0;
+}
+
+.grafikon {
+    width: 100%;
+    overflow-x: auto;
+
+    margin-top: 20px;
+}
+
+.grafikon canvas {
+    max-width: 100%;
+}
+
+.izbor-proizvoda {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px 20px;
+
+    margin-bottom: 20px;
+}
+
+.checkbox-red {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    font-weight: normal;
+}
+
+.checkbox-red input {
+    width: auto;
+}
+
+@media (max-width: 700px) {
+
+    .grafikon-kartica {
+        padding: 14px;
+    }
+
+    .izbor-proizvoda {
+        flex-direction: column;
+    }
+
+}

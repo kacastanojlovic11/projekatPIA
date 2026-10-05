@@ -1,0 +1,51 @@
+.registracija {
+    max-width: 650px;
+    margin: 30px auto;
+
+    padding: 25px;
+
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+}
+
+.forma-red {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 16px;
+}
+
+.forma-red input,
+.forma-red select {
+    width: 100%;
+}
+
+.institucija {
+    margin: 25px 0;
+
+    padding: 18px;
+
+    border: 1px solid var(--ivica);
+    border-radius: 6px;
+
+    background-color: #faf8f3;
+}
+
+.institucija h3 {
+    margin-top: 0;
+}
+
+.pomocni-tekst {
+    margin-top: 5px;
+}
+
+@media (max-width: 700px) {
+
+    .registracija {
+        margin: 15px auto;
+        padding: 16px;
+    }
+
+}

@@ -1,0 +1,30 @@
+.prikaz-proizvoda {
+    position: relative;
+    width: 350px;
+}
+
+.slika-proizvoda {
+    width: 100%;
+    display: block;
+}
+
+.slika-preko-slike {
+    position: absolute;
+    top: 18%;
+    left: 25%;
+    width: 50%;
+    height: 45%;
+    object-fit: contain;
+}
+
+.tekst-preko-slike {
+    position: absolute;
+    top: 68%;
+    left: 20%;
+    width: 60%;
+    text-align: center;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}

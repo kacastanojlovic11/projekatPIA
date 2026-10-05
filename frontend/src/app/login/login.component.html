@@ -1,10 +1,32 @@
-Username: <input type="text" [(ngModel)]="username"> <br />
-Password: <input type="password" [(ngModel)]="password"> <br />
-<br>
-<button (click)="login()">Login</button>
-<br />
-<p class="error">{{error}}</p>
-<br><br>
-<a href="/register">
-    Registracija
-</a>
+<div class="forma-kartica">
+
+    <h2>Prijava</h2>
+
+    <div class="forma-red">
+        <label>Korisničko ime:</label>
+        <input type="text" [(ngModel)]="username">
+    </div>
+
+    <div class="forma-red">
+        <label>Lozinka:</label>
+        <input type="password" [(ngModel)]="password">
+    </div>
+
+    <button (click)="login()">Uloguj se</button>
+
+    <p>
+        <a routerLink="/forgot-password">
+            Zaboravili ste lozinku?
+        </a>
+    </p>
+
+    @if (error !== "") {
+    <p class="greska">{{ error }}</p>
+    }
+
+    <p>
+        Nemate nalog?
+        <a routerLink="/register">Registracija</a>
+    </p>
+
+</div>

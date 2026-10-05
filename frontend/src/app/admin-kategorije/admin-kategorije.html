@@ -1,0 +1,49 @@
+<div class="kategorije">
+
+    <h1>Upravljanje kategorijama</h1>
+
+    <section class="nova-kategorija">
+
+        <h2>Nova kategorija</h2>
+        <div class="unos">
+            <input type="text" [(ngModel)]="novaKategorija" placeholder="Naziv kategorije">
+            <button (click)="dodajKategoriju()">DODAJ KATEGORIJU</button>
+        </div>
+
+    </section>
+
+    <section>
+
+        <h2>Postojeće kategorije</h2>
+        <div class="kategorije-lista">
+            @for (kategorija of kategorije; track kategorija._id) {
+            <div class="kategorija-kartica">
+                <h3>{{ kategorija.naziv }}</h3>
+                <ul>
+                    @for (potkategorija of kategorija.potkategorije; track potkategorija) {
+                        <li>{{ potkategorija }}</li>
+                    }
+                </ul>
+
+                <div class="unos">
+                    <input type="text" [(ngModel)]="novaPotkategorija[kategorija._id]" placeholder="Nova potkategorija">
+                    <button (click)="dodajPotkategoriju(kategorija._id)">DODAJ POTKATEGORIJU</button>
+                </div>
+
+            </div>
+            }
+
+        </div>
+
+    </section>
+
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+</div>

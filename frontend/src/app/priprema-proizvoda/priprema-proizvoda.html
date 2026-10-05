@@ -1,0 +1,40 @@
+<h1>Priprema proizvoda</h1>
+<h2>{{ proizvod.naziv }}</h2>
+
+<label>Tekst za štampu:</label>
+<br>
+<textarea [(ngModel)]="tekst" rows="3" cols="40"></textarea>
+<br>
+<label>Slika za štampu:</label>
+<input #slikaInput type="file" accept=".jpg,.jpeg,.png,.gif" (change)="izabranaSlika($event)">
+@if (greskaSlike) {
+    <p>{{ greskaSlike }}</p>
+}
+<br><br>
+
+<div class="prikaz-proizvoda">
+    @if (glavnaSlika) {
+        <img [src]="glavnaSlika" class="slika-proizvoda">
+    }
+    @if (slikaZaStampu) {
+        <img [src]="slikaZaStampu" class="slika-preko-slike">
+    }
+    @if (tekst) {
+        <div class="tekst-preko-slike">{{ tekst }}</div>
+    }
+</div>
+<br>
+
+<label>Količina: </label>
+<input type="number" min="1" step="1" [max]="proizvod.kolicinaNaLageru" [(ngModel)]="kolicina" (ngModelChange)="provjeriKolicinu()">
+@if (greskaKolicine) {
+    <p>{{ greskaKolicine }}</p>
+}
+<br><br>
+
+<button (click)="ponisti(slikaInput)">PONIŠTI</button>
+<button (click)="nazad()">NAZAD</button>
+<button (click)="dodajUKorpu()">DODAJ U KORPU</button>
+@if (greskaKorpa) {
+    <p>{{ greskaKorpa }}</p>
+}

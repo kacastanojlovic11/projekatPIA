@@ -1,1 +1,256 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --pozadina: #f5f1e8;
+    --povrsina: #ffffff;
+
+    --tekst: #263238;
+    --sekundarni-tekst: #66706f;
+
+    --glavna: #356b66;
+    --glavna-tamna: #28534f;
+
+    --akcenat: #d2a84a;
+
+    --ivica: #d8d4cc;
+
+    --greska: #a94442;
+    --uspjeh: #39734b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--pozadina);
+    color: var(--tekst);
+    line-height: 1.5;
+}
+
+
+/* GLAVNI SADRZAJ */
+
+main {
+    width: min(1100px, 92%);
+    margin: 30px auto;
+    min-height: 65vh;
+}
+
+
+/* NASLOVI */
+
+h1,
+h2,
+h3 {
+    color: var(--tekst);
+}
+
+h2 {
+    margin-top: 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--akcenat);
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+
+/* PARAGRAFI */
+
+p {
+    color: var(--tekst);
+}
+
+
+/* LINKOVI */
+
+a {
+    color: var(--glavna);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* FORME */
+
+label {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
+    padding: 9px 11px;
+
+    border: 1px solid var(--ivica);
+    border-radius: 5px;
+
+    background-color: white;
+    color: var(--tekst);
+
+    font-size: 14px;
+
+    max-width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--glavna);
+}
+
+
+/* DUGMAD */
+
+button {
+    padding: 9px 16px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: var(--glavna);
+    color: white;
+
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: var(--glavna-tamna);
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* TABELE */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    margin: 20px 0;
+
+    background-color: var(--povrsina);
+}
+
+th,
+td {
+    padding: 10px 12px;
+
+    border-bottom: 1px solid var(--ivica);
+
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #e5ece9;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #faf8f3;
+}
+
+
+/* SLIKE */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* KARTICE */
+
+.kartica {
+    background-color: var(--povrsina);
+
+    border: 1px solid var(--ivica);
+    border-radius: 7px;
+
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* PORUKE */
+
+.greska,
+.error {
+    color: var(--greska);
+    font-weight: 600;
+}
+
+.uspjeh,
+.success {
+    color: var(--uspjeh);
+    font-weight: 600;
+}
+
+
+/* MANJI POMOCNI TEKST */
+
+.pomocni-tekst {
+    color: var(--sekundarni-tekst);
+    font-size: 13px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    main {
+        width: 94%;
+        margin: 18px auto;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    button {
+        max-width: 100%;
+    }
+
+    .kartica {
+        padding: 14px;
+    }
+}

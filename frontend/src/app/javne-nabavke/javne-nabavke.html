@@ -1,0 +1,59 @@
+<h1>Javne nabavke</h1>
+
+@if (error) {
+    <p>{{ error }}</p>
+}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Datum raspisivanja</th>
+            <th>Ističe</th>
+            <th>Potrebni proizvodi</th>
+            <th>Broj ponuda</th>
+            <th>Status</th>
+            <th>Pobjednička ponuda</th>
+            <th>Pobjednička štamparija</th>
+            <th>Izvještaj</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for ( nabavka of nabavke; track nabavka._id) {
+            <tr>
+                <td>{{ nabavka._id }}</td>
+                <td>{{ nabavka.datumRaspisivanja | date:'dd.MM.yyyy HH:mm' }}</td>
+                <td>{{ nabavka.datumIsteka | date:'dd.MM.yyyy HH:mm' }}</td>
+                <td>
+                    <ol>
+                        @for (stavka of nabavka.stavke; track $index) {
+                            <li>{{ stavka.nazivProizvoda  }} ({{ stavka.kolicina }})</li>
+                        }
+                    </ol>
+                </td>
+                <td>{{ nabavka.ponude.length }}</td>
+                <td>{{ nabavka.status }}</td>
+                <td>
+                    @if (nabavka.status === "zavrsena") {
+                        {{ nabavka.pobjednickaPonuda }} RSD
+                    } @else {
+                        -
+                    }
+                </td>
+                <td>
+                    @if (nabavka.status === "zavrsena") {
+                        {{ nabavka.pobjednickaStamparijaId }}
+                    } @else {
+                        -
+                    }
+                </td>
+                <td>
+                    @if ( nabavka.status === "zavrsena" ) {
+                        <button (click)="preuzmiIzvjestaj(nabavka)">PREUZMI IZVJEŠTAJ</button>
+                    } @else {
+                        -
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

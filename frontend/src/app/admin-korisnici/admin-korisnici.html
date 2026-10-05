@@ -1,0 +1,55 @@
+<div class="admin-korisnici">
+
+    <h1>Korisnici</h1>
+
+    @if (message) {
+    <p class="uspjeh">{{ message }}</p>
+    }
+
+    @if (error) {
+    <p class="greska">{{ error }}</p>
+    }
+
+    <div class="tabela-okvir">
+        <table>
+            <thead>
+                <tr>
+                    <th>Korisničko ime</th>
+                    <th>Ime i prezime</th>
+                    <th>Email</th>
+                    <th>Tip</th>
+                    <th>Status</th>
+                    <th>Institucija</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for (korisnik of korisnici; track korisnik._id) {
+
+                <tr>
+
+                    <td>{{ korisnik.kor_ime }}</td>
+                    <td>
+                        {{ korisnik.ime }}
+                        {{ korisnik.prezime }}
+                    </td>
+                    <td>{{ korisnik.mejl }}</td>
+                    <td>{{ korisnik.tip }}</td>
+                    <td>
+                        <span class="status">
+                            {{ korisnik.status }}
+                        </span>
+                    </td>
+                    <td>{{ korisnik.naziv_institucije || "-" }}</td>
+                    <td class="akcije">
+                        <button (click)="izmijeni(korisnik)">IZMIJENI</button>
+                        <button class="obrisi-dugme" (click)="obrisi(korisnik)">OBRIŠI</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

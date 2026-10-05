@@ -1,13 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProizvodiService } from '../services/proizvodi.service';
 import Proizvod from '../models/proizvod';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
+import { UtisciService } from '../services/utisci-service';
+import Utisak from '../models/utisak';
 
 @Component({
   selector: 'app-proizvod-detalji',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './proizvod-detalji.html',
   styleUrl: './proizvod-detalji.css',
 })
@@ -16,6 +19,8 @@ export class ProizvodDetalji implements OnInit{
 
   private route = inject(ActivatedRoute);
   private proizvodiService = inject(ProizvodiService);
+  private utisciService = inject(UtisciService)
+  private router = inject(Router)
 
   private sanitizer = inject(DomSanitizer);
 
@@ -26,11 +31,19 @@ export class ProizvodDetalji implements OnInit{
   klijentPrikaz: boolean = false;
   boje: string[] = [];
   izabranaBoja: string = "";
-  izabranaUslugaID: string = "";
+  izabranaUslugaId: string = "";
 
   mapaUrl: SafeResourceUrl | null = null;
 
+  komentari: Utisak[] = [];
+  ulogovaniKlijentId: string = "";
+
   ngOnInit(): void {
+    const sacuvaniKorisnik = localStorage.getItem("ulogovan");
+    if(sacuvaniKorisnik){
+      const korisnik = JSON.parse(sacuvaniKorisnik);
+      this.ulogovaniKlijentId = korisnik._id;
+    }
     this.klijentPrikaz = this.route.snapshot.data['klijent'] === true;
     const sifra = this.route.snapshot.paramMap.get("sifra");
 
@@ -51,7 +64,7 @@ export class ProizvodDetalji implements OnInit{
         }
         this.izabranaBoja = this.boje[0];
         if(this.proizvod.uslugeStampe.length > 0){
-          this.izabranaUslugaID = this.proizvod.uslugeStampe[0].idUsluge;
+          this.izabranaUslugaId = this.proizvod.uslugeStampe[0].idUsluge;
         }
 
         this.sveSlike = [];
@@ -63,6 +76,10 @@ export class ProizvodDetalji implements OnInit{
           this.sveSlike.push(slika);
         }
         this.ucitajGlavnuSliku();
+      })
+
+      this.utisciService.poslednjih5(sifra).subscribe(res => {
+        this.komentari = res;
       })
     }
   }
@@ -87,6 +104,17 @@ export class ProizvodDetalji implements OnInit{
     this.glavnaSlika = slika;
     const nazivCookie = "glavnaSlika_" + this.proizvod.sifra;
     document.cookie = nazivCookie + "=" + encodeURIComponent(slika) + "; path=/";
+  }
+
+  dalje(){
+    this.router.navigate(["klijent", "priprema", this.proizvod.sifra],
+      {
+        queryParams: {
+          boja: this.izabranaBoja,
+          uslugaId: this.izabranaUslugaId
+        }
+      }
+    );
   }
 
 }

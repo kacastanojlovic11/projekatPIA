@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 const UslugaStampe = new Schema({
     idUsluge: String,
     tipStampe: String,
-    dodatnaCenaPoKomadu: Number,
+    dodatnaCenaPoKomadu:{
+        type: Number,
+        default: 0
+    },
     maxSirinaMm: Number,
     maxVisinaMm: Number
 })

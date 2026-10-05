@@ -32,18 +32,34 @@ export class ProizvodiService {
     return this.http.get<Proizvod>(`${this.uri}/detalji/${sifra}`);
   }
 
-  // odobri(proizvod: Proizvod, komentar: Komentari) {
-  //   const data = { proizvod: proizvod, komentar: komentar }
-  //   return this.http.post<Poruka>(`${this.uri}/odobri`, data)
-  // }
+  dohvatiZaStampariju(stamparijaId: string) {
+    return this.http.get<any[]>(`${this.uri}/stamparija/${stamparijaId}`);
+  }
+  
+  azurirajKolicinu(sifra: string, stamparijaId: string, kolicina: number) {
+    return this.http.post<any>(`${this.uri}/azuriraj-kolicinu`, {sifra: sifra, stamparijaId: stamparijaId, kolicina: kolicina});
+  }
 
-  // odbaci(proizvod: Proizvod, komentar: Komentari) {
-  //   const data = { proizvod: proizvod, komentar: komentar }
-  //   return this.http.post<Poruka>(`${this.uri}/odbaci`, data)
-  // }
+  dodajProizvod(podaci: FormData) {
+    return this.http.post<any>(`${this.uri}/dodaj`, podaci);
+  }
 
-  // unesi(novi: Proizvod) {
-  //   const data = { naziv: novi.naziv, opis: novi.opis }
-  //   return this.http.post<Poruka>(`${this.uri}/unesi`, data)
-  // }
+  dodajIzJson(stamparijaId: string, jsonFajl: File) {
+    const podaci = new FormData();
+    podaci.append("stamparijaId", stamparijaId);
+    podaci.append("jsonFajl", jsonFajl);
+    return this.http.post<any>(`${this.uri}/dodaj-iz-json`, podaci);
+  }
+
+  dodajSlike(sifra: string, stamparijaId: string, glavnaSlika: File | null, dodatneSlike: File[]) {
+    const podaci = new FormData();
+    podaci.append("stamparijaId", stamparijaId);
+    if (glavnaSlika) {
+      podaci.append("glavnaSlika", glavnaSlika);
+    }
+    for (let slika of dodatneSlike) {
+      podaci.append("dodatneSlike", slika);
+    }
+    return this.http.post<any>(`${this.uri}/slike/${sifra}`, podaci);
+  }
 }
